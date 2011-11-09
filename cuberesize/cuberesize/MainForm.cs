@@ -91,8 +91,36 @@ namespace cuberesize
                         break;
                     }
                 }
+
+                Int64 jpgqual = 0;
+
+                if (radio_filesize.Checked)
+                {
+                    Int64 min = 0, max = 101;
+                    for (int i = 0 ; i < 7 ; ++i )
+                    {
+                        Int64 mid = (max + min) / 2;
+                        NullStream ns = new NullStream();
+                        EncoderParameters ep = new EncoderParameters(1);
+                        EncoderParameter testqual = new EncoderParameter(Encoder.Quality, mid);
+                        ep.Param[0] = testqual;
+
+                        result.Image.Save(ns, jpegEncoder, ep);
+
+                        if (ns.Length <= numeric_filesize.Value * 1024)
+                            min = mid;
+                        else
+                            max = mid;
+                    }
+                    jpgqual = min;
+                }
+                else
+                {
+                    jpgqual = (Int64)numeric_quality.Value;
+                }
+
                 EncoderParameters encParams = new EncoderParameters(1);
-                EncoderParameter quality = new EncoderParameter(Encoder.Quality, (Int64)numeric_quality.Value);
+                EncoderParameter quality = new EncoderParameter(Encoder.Quality, jpgqual);
                 encParams.Param[0] = quality;
 
                 result.Image.Save(filepath, jpegEncoder, encParams);
@@ -154,6 +182,73 @@ namespace cuberesize
                 case 0:
                     combo_quality.SelectedIndex = 3;
                     break;
+            }
+        }
+
+        private class NullStream : System.IO.Stream
+        {
+            private long len;
+
+            public NullStream()
+            {
+                len = 0;
+            }
+
+            public override bool CanRead
+            {
+                get { return false; }
+            }
+
+            public override bool CanSeek
+            {
+                get { return false; }
+            }
+
+            public override bool CanWrite
+            {
+                get { return true; }
+            }
+
+            public override void Flush()
+            {
+                return;
+            }
+
+            public override long Length
+            {
+                get { return len; }
+            }
+
+            public override long Position
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override long Seek(long offset, System.IO.SeekOrigin origin)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void SetLength(long value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                len += count;
             }
         }
     }

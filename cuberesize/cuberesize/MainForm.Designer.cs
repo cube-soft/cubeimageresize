@@ -35,8 +35,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.radio_quality = new System.Windows.Forms.RadioButton();
             this.track_quality = new System.Windows.Forms.TrackBar();
-            this.radio_size = new System.Windows.Forms.RadioButton();
-            this.text_size = new System.Windows.Forms.TextBox();
+            this.radio_filesize = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.check_sepia = new System.Windows.Forms.CheckBox();
@@ -61,9 +60,10 @@
             this.numeric_quality = new System.Windows.Forms.NumericUpDown();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.combo_size = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.button_size = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.combo_size = new System.Windows.Forms.ComboBox();
+            this.numeric_filesize = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_quality)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -73,6 +73,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_quality)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -144,24 +145,15 @@
             this.track_quality.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.track_quality.Scroll += new System.EventHandler(this.track_quality_Scroll);
             // 
-            // radio_size
+            // radio_filesize
             // 
-            this.radio_size.AutoSize = true;
-            this.radio_size.Location = new System.Drawing.Point(195, 157);
-            this.radio_size.Name = "radio_size";
-            this.radio_size.Size = new System.Drawing.Size(92, 16);
-            this.radio_size.TabIndex = 11;
-            this.radio_size.Text = "ファイルサイズ：";
-            this.radio_size.UseVisualStyleBackColor = true;
-            // 
-            // text_size
-            // 
-            this.text_size.Location = new System.Drawing.Point(293, 156);
-            this.text_size.Name = "text_size";
-            this.text_size.Size = new System.Drawing.Size(92, 19);
-            this.text_size.TabIndex = 12;
-            this.text_size.Text = "10";
-            this.text_size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.radio_filesize.AutoSize = true;
+            this.radio_filesize.Location = new System.Drawing.Point(195, 157);
+            this.radio_filesize.Name = "radio_filesize";
+            this.radio_filesize.Size = new System.Drawing.Size(92, 16);
+            this.radio_filesize.TabIndex = 11;
+            this.radio_filesize.Text = "ファイルサイズ：";
+            this.radio_filesize.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -442,13 +434,14 @@
             this.panel1.Size = new System.Drawing.Size(534, 77);
             this.panel1.TabIndex = 31;
             // 
-            // combo_size
+            // button_size
             // 
-            this.combo_size.FormattingEnabled = true;
-            this.combo_size.Location = new System.Drawing.Point(134, 12);
-            this.combo_size.Name = "combo_size";
-            this.combo_size.Size = new System.Drawing.Size(392, 20);
-            this.combo_size.TabIndex = 0;
+            this.button_size.Location = new System.Drawing.Point(15, 41);
+            this.button_size.Name = "button_size";
+            this.button_size.Size = new System.Drawing.Size(510, 24);
+            this.button_size.TabIndex = 2;
+            this.button_size.Text = "他の設定サイズより選ぶ";
+            this.button_size.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -459,14 +452,21 @@
             this.label6.TabIndex = 1;
             this.label6.Text = "以前に使用したサイズ：";
             // 
-            // button_size
+            // combo_size
             // 
-            this.button_size.Location = new System.Drawing.Point(15, 41);
-            this.button_size.Name = "button_size";
-            this.button_size.Size = new System.Drawing.Size(510, 24);
-            this.button_size.TabIndex = 2;
-            this.button_size.Text = "他の設定サイズより選ぶ";
-            this.button_size.UseVisualStyleBackColor = true;
+            this.combo_size.FormattingEnabled = true;
+            this.combo_size.Location = new System.Drawing.Point(134, 12);
+            this.combo_size.Name = "combo_size";
+            this.combo_size.Size = new System.Drawing.Size(392, 20);
+            this.combo_size.TabIndex = 0;
+            // 
+            // numeric_filesize
+            // 
+            this.numeric_filesize.Location = new System.Drawing.Point(293, 157);
+            this.numeric_filesize.Name = "numeric_filesize";
+            this.numeric_filesize.Size = new System.Drawing.Size(92, 19);
+            this.numeric_filesize.TabIndex = 32;
+            this.numeric_filesize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // MainForm
             // 
@@ -474,6 +474,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(559, 481);
+            this.Controls.Add(this.numeric_filesize);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.numeric_quality);
@@ -486,8 +487,7 @@
             this.Controls.Add(this.button_save);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.text_size);
-            this.Controls.Add(this.radio_size);
+            this.Controls.Add(this.radio_filesize);
             this.Controls.Add(this.track_quality);
             this.Controls.Add(this.combo_quality);
             this.Controls.Add(this.radio_quality);
@@ -512,6 +512,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,8 +527,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton radio_quality;
         private System.Windows.Forms.TrackBar track_quality;
-        private System.Windows.Forms.RadioButton radio_size;
-        private System.Windows.Forms.TextBox text_size;
+        private System.Windows.Forms.RadioButton radio_filesize;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox check_sepia;
@@ -555,6 +555,7 @@
         private System.Windows.Forms.Button button_size;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox combo_size;
+        private System.Windows.Forms.NumericUpDown numeric_filesize;
     }
 }
 
