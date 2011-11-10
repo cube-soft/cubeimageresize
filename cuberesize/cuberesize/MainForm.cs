@@ -8,11 +8,37 @@ namespace cuberesize
 {
     public partial class MainForm : Form
     {
+        Global.Setting.Setting setting;
+
         public MainForm()
         {
             InitializeComponent();
-            combo_quality.SelectedIndex = 1;
-            combo_filename.SelectedIndex = 0;
+            setting = new Global.Setting.Setting("CubeSoft", "CubeResize");
+            this.FormClosed += (sender,e) => setting.Dispose();
+
+            numeric_width.Value = setting.GetInt("width", 640);
+            numeric_height.Value = setting.GetInt("height", 480);
+            if (setting.GetBool("isquality", true))
+                radio_quality.Checked = true;
+            else
+                radio_filesize.Checked = true;
+            numeric_quality.Value = setting.GetInt("quality", 100);
+            numeric_filesize.Value = setting.GetInt("filesize", 40);
+            check_brightness.Checked = setting.GetBool("brightness", false);
+            check_saturation.Checked = setting.GetBool("saturation", false);
+            check_contrast.Checked = setting.GetBool("contrast", false);
+            check_monochrome.Checked = setting.GetBool("monochrome", false);
+            check_sepia.Checked = setting.GetBool("sepia", false);
+            if (setting.GetBool("isfolder", true))
+                radio_folder.Checked = true;
+            else
+                radio_filename.Checked = true;
+            text_folder.Text = setting.GetString("foler", "");
+            text_filename.Text = setting.GetString("filename", "");
+            if (setting.GetBool("modifier", true))
+                combo_filename.SelectedIndex = 0;
+            else
+                combo_filename.SelectedIndex = 1;
         }
 
         private void label_image_DragEnter(object sender, DragEventArgs e)
@@ -250,6 +276,24 @@ namespace cuberesize
             {
                 len += count;
             }
+        }
+
+        private void button_save_Click(object sender, EventArgs e)
+        {
+            setting.SetInt("width", (int)numeric_width.Value);
+            setting.SetInt("height", (int)numeric_height.Value);
+            setting.SetBool("isquality", radio_quality.Checked);
+            setting.SetInt("quality", (int)numeric_quality.Value);
+            setting.SetInt("filesize", (int)numeric_filesize.Value);
+            setting.SetBool("brightness", check_brightness.Checked);
+            setting.SetBool("saturation", check_saturation.Checked);
+            setting.SetBool("contrast", check_contrast.Checked);
+            setting.SetBool("monochrome", check_monochrome.Checked);
+            setting.SetBool("sepia", check_sepia.Checked);
+            setting.SetBool("isfolder", radio_folder.Checked);
+            setting.SetString("foler", text_folder.Text);
+            setting.SetString("filename", text_filename.Text);
+            setting.SetBool("modifier", combo_filename.SelectedIndex == 0);
         }
     }
 }

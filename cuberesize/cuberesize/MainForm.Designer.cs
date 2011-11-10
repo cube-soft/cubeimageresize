@@ -292,6 +292,7 @@
             this.button_save.TabIndex = 22;
             this.button_save.Text = "設定を保存";
             this.button_save.UseVisualStyleBackColor = true;
+            this.button_save.Click += new System.EventHandler(this.button_save_Click);
             // 
             // button_cancel
             // 
@@ -463,6 +464,11 @@
             // numeric_filesize
             // 
             this.numeric_filesize.Location = new System.Drawing.Point(293, 157);
+            this.numeric_filesize.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.numeric_filesize.Name = "numeric_filesize";
             this.numeric_filesize.Size = new System.Drawing.Size(92, 19);
             this.numeric_filesize.TabIndex = 32;
