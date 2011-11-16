@@ -91,7 +91,7 @@
             // check_sepia
             // 
             this.check_sepia.AutoSize = true;
-            this.check_sepia.Location = new System.Drawing.Point(126, 42);
+            this.check_sepia.Location = new System.Drawing.Point(126, 44);
             this.check_sepia.Name = "check_sepia";
             this.check_sepia.Size = new System.Drawing.Size(52, 16);
             this.check_sepia.TabIndex = 4;
@@ -101,7 +101,7 @@
             // check_monochrome
             // 
             this.check_monochrome.AutoSize = true;
-            this.check_monochrome.Location = new System.Drawing.Point(127, 20);
+            this.check_monochrome.Location = new System.Drawing.Point(127, 22);
             this.check_monochrome.Name = "check_monochrome";
             this.check_monochrome.Size = new System.Drawing.Size(58, 16);
             this.check_monochrome.TabIndex = 3;
@@ -111,7 +111,7 @@
             // check_contrast
             // 
             this.check_contrast.AutoSize = true;
-            this.check_contrast.Location = new System.Drawing.Point(10, 64);
+            this.check_contrast.Location = new System.Drawing.Point(10, 66);
             this.check_contrast.Name = "check_contrast";
             this.check_contrast.Size = new System.Drawing.Size(98, 16);
             this.check_contrast.TabIndex = 2;
@@ -121,7 +121,7 @@
             // check_saturation
             // 
             this.check_saturation.AutoSize = true;
-            this.check_saturation.Location = new System.Drawing.Point(10, 42);
+            this.check_saturation.Location = new System.Drawing.Point(10, 44);
             this.check_saturation.Name = "check_saturation";
             this.check_saturation.Size = new System.Drawing.Size(84, 16);
             this.check_saturation.TabIndex = 1;
@@ -131,7 +131,7 @@
             // check_brightness
             // 
             this.check_brightness.AutoSize = true;
-            this.check_brightness.Location = new System.Drawing.Point(12, 20);
+            this.check_brightness.Location = new System.Drawing.Point(12, 22);
             this.check_brightness.Name = "check_brightness";
             this.check_brightness.Size = new System.Drawing.Size(70, 16);
             this.check_brightness.TabIndex = 0;
@@ -494,8 +494,8 @@
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_save);
             this.Controls.Add(this._EffectSettingGroupBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(700, 520);
             this.Name = "MainForm";
             this.Text = "CubeResize";
             this._EffectSettingGroupBox.ResumeLayout(false);
