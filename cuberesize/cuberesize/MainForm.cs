@@ -3,12 +3,15 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace cuberesize
 {
     public partial class MainForm : Form
     {
         Global.Setting.Setting setting;
+        SizeSelector.ItemInfo presize = null;
+        bool isupdate = false;
 
         public MainForm()
         {
@@ -39,6 +42,16 @@ namespace cuberesize
                 combo_filename.SelectedIndex = 0;
             else
                 combo_filename.SelectedIndex = 1;
+
+            ArrayList list = new ArrayList();
+            int num = setting.GetInt("list_num", 0);
+            for (int i = 0; i < num; ++i)
+            {
+                SizeSelector.ItemInfo info = new SizeSelector.ItemInfo(setting.GetString("list_name" + i, ""), setting.GetInt("list_width" + i, 0), setting.GetInt("list_height" + i, 0));
+                combo_size.Items.Add(info.name + " - " + info.width + "×" + info.height);
+                list.Add(info);
+            }
+            combo_size.Tag = list;
         }
 
         private void label_image_DragEnter(object sender, DragEventArgs e)
@@ -211,6 +224,8 @@ namespace cuberesize
             }
         }
 
+        #region NullStream Class
+
         private class NullStream : System.IO.Stream
         {
             private long len;
@@ -278,6 +293,8 @@ namespace cuberesize
             }
         }
 
+        #endregion
+
         private void button_save_Click(object sender, EventArgs e)
         {
             setting.SetInt("width", (int)numeric_width.Value);
@@ -294,6 +311,52 @@ namespace cuberesize
             setting.SetString("foler", text_folder.Text);
             setting.SetString("filename", text_filename.Text);
             setting.SetBool("modifier", combo_filename.SelectedIndex == 0);
+
+            ArrayList list = (ArrayList)combo_size.Tag;
+            if (presize != null)
+            {
+                combo_size.Items.Add(presize.name + " - " + presize.width + "×" + presize.height);
+                list.Add(presize);
+            }
+
+            int num = combo_size.Items.Count;
+            setting.SetInt("list_num", num);
+            for (int i = 0; i < num; ++i)
+            {
+                SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)list[i];
+                setting.SetString("list_name" + i, info.name);
+                setting.SetInt("list_width" + i, info.width);
+                setting.SetInt("list_height" + i, info.height);
+            }
+
+            presize = null;
+        }
+
+        private void button_size_Click(object sender, EventArgs e)
+        {
+            using (SizeSelector selector = new SizeSelector())
+            {
+                if (selector.ShowDialog(this) == System.Windows.Forms.DialogResult.Cancel)
+                    return;
+                isupdate = true;
+                presize = selector.SelectedItem;
+                numeric_width.Value = presize.width;
+                numeric_height.Value = presize.height;
+                isupdate = false;
+            }
+        }
+
+        private void numeric_wh_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isupdate)
+                presize = null;
+        }
+
+        private void combo_size_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)((ArrayList)combo_size.Tag)[combo_size.SelectedIndex];
+            numeric_width.Value = info.width;
+            numeric_height.Value = info.height;
         }
     }
 }

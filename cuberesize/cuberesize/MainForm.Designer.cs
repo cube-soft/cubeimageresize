@@ -313,6 +313,7 @@
             this.button_size.TabIndex = 2;
             this.button_size.Text = "他の設定サイズより選ぶ";
             this.button_size.UseVisualStyleBackColor = true;
+            this.button_size.Click += new System.EventHandler(this.button_size_Click);
             // 
             // label6
             // 
@@ -331,6 +332,7 @@
             this.combo_size.Name = "combo_size";
             this.combo_size.Size = new System.Drawing.Size(263, 20);
             this.combo_size.TabIndex = 0;
+            this.combo_size.SelectedIndexChanged += new System.EventHandler(this.combo_size_SelectedIndexChanged);
             // 
             // numeric_quality
             // 
@@ -362,6 +364,7 @@
             0,
             0,
             0});
+            this.numeric_height.ValueChanged += new System.EventHandler(this.numeric_wh_ValueChanged);
             // 
             // numeric_width
             // 
@@ -385,6 +388,7 @@
             0,
             0,
             0});
+            this.numeric_width.ValueChanged += new System.EventHandler(this.numeric_wh_ValueChanged);
             // 
             // label5
             // 
