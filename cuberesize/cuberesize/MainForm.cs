@@ -9,6 +9,31 @@ namespace cuberesize
 {
     public partial class MainForm : Form
     {
+        const string ORGANIZATION_NAME          = "CubeSoft";
+        const string APPLICATION_NAME           = "CubeResize";
+        const string SIZE_SELECTOR_LAYOUT_XML   = @".\assistant.xml";
+
+        const string SETTING_WIDTH              = "width";
+        const string SETTING_HEIGHT             = "height";
+        const string SETTING_IS_QUALITY         = "isquality";
+        const string SETTING_QUALITY            = "quality";
+        const string SETTING_FILESIZE           = "filesize";
+        const string SETTING_BRIGHTNESS         = "brightness";
+        const string SETTING_SATURATION         = "saturation";
+        const string SETTING_CONTRAST           = "contrast";
+        const string SETTING_MONOCHROME         = "monochrome";
+        const string SETTING_SEPIA              = "sepia";
+        const string SETTING_IS_FOLDER          = "isfolder";
+        const string SETTING_FOLDER             = "folder";
+        const string SETTING_FILENAME           = "filename";
+        const string SETTING_MODIFIER           = "modifier";
+        const string SETTING_LIST_NUM           = "list_num";
+        const string SETTING_LIST_ID            = "list_id";
+        const string SETTING_LIST_CATEGORY      = "list_category";
+        const string SETTING_LIST_NAME          = "list_name";
+        const string SETTING_LIST_WIDTH         = "list_width";
+        const string SETTING_LIST_HEIGHT        = "list_height";
+
         Global.Setting.Setting setting;
         SizeSelector.ItemInfo presize = null;
         bool isupdate = false;
@@ -16,42 +41,49 @@ namespace cuberesize
         public MainForm()
         {
             InitializeComponent();
-            setting = new Global.Setting.Setting("CubeSoft", "CubeResize");
+            setting = new Global.Setting.Setting(ORGANIZATION_NAME, APPLICATION_NAME);
             this.FormClosed += (sender,e) => setting.Dispose();
 
-            numeric_width.Value = setting.GetInt("width", 640);
-            numeric_height.Value = setting.GetInt("height", 480);
-            if (setting.GetBool("isquality", true))
+            numeric_width.Value = setting.GetInt(SETTING_WIDTH, 640);
+            numeric_height.Value = setting.GetInt(SETTING_HEIGHT, 480);
+            if (setting.GetBool(SETTING_IS_QUALITY, true))
                 radio_quality.Checked = true;
             else
                 radio_filesize.Checked = true;
-            numeric_quality.Value = setting.GetInt("quality", 100);
-            numeric_filesize.Value = setting.GetInt("filesize", 40);
-            check_brightness.Checked = setting.GetBool("brightness", false);
-            check_saturation.Checked = setting.GetBool("saturation", false);
-            check_contrast.Checked = setting.GetBool("contrast", false);
-            check_monochrome.Checked = setting.GetBool("monochrome", false);
-            check_sepia.Checked = setting.GetBool("sepia", false);
-            if (setting.GetBool("isfolder", true))
+            numeric_quality.Value = setting.GetInt(SETTING_QUALITY, 100);
+            numeric_filesize.Value = setting.GetInt(SETTING_FILESIZE, 40);
+            check_brightness.Checked = setting.GetBool(SETTING_BRIGHTNESS, false);
+            check_saturation.Checked = setting.GetBool(SETTING_SATURATION, false);
+            check_contrast.Checked = setting.GetBool(SETTING_CONTRAST, false);
+            check_monochrome.Checked = setting.GetBool(SETTING_MONOCHROME, false);
+            check_sepia.Checked = setting.GetBool(SETTING_SEPIA, false);
+            if (setting.GetBool(SETTING_IS_FOLDER, true))
                 radio_folder.Checked = true;
             else
                 radio_filename.Checked = true;
-            text_folder.Text = setting.GetString("foler", "");
-            text_filename.Text = setting.GetString("filename", "");
-            if (setting.GetBool("modifier", true))
+            text_folder.Text = setting.GetString(SETTING_FOLDER, "");
+            text_filename.Text = setting.GetString(SETTING_FILENAME, "");
+            if (setting.GetBool(SETTING_MODIFIER, true))
                 combo_filename.SelectedIndex = 0;
             else
                 combo_filename.SelectedIndex = 1;
 
             ArrayList list = new ArrayList();
-            int num = setting.GetInt("list_num", 0);
+            int num = setting.GetInt(SETTING_LIST_NUM, 0);
             for (int i = 0; i < num; ++i)
             {
-                SizeSelector.ItemInfo info = new SizeSelector.ItemInfo(setting.GetString("list_name" + i, ""), setting.GetInt("list_width" + i, 0), setting.GetInt("list_height" + i, 0));
+                SizeSelector.ItemInfo info = new SizeSelector.ItemInfo(
+                    setting.GetString(SETTING_LIST_ID + i, ""),
+                    setting.GetString(SETTING_LIST_CATEGORY + i, ""),
+                    setting.GetString(SETTING_LIST_NAME + i, ""),
+                    setting.GetInt(SETTING_LIST_WIDTH + i, 0),
+                    setting.GetInt(SETTING_LIST_HEIGHT + i, 0));
                 combo_size.Items.Add(info.name + " - " + info.width + "×" + info.height);
                 list.Add(info);
             }
             combo_size.Tag = list;
+            if (num != 0)
+                combo_size.SelectedIndex = 0;
         }
 
         private void label_image_DragEnter(object sender, DragEventArgs e)
@@ -68,7 +100,7 @@ namespace cuberesize
             {
                 if (text_folder.Text.Length == 0)
                 {
-                    MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("保存するフォルダ名を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -76,18 +108,48 @@ namespace cuberesize
             {
                 if (text_filename.Text.Length == 0)
                 {
-                    MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("ファイル名に付与するテキストを入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
 
-            Bitmap original;
-            ImageResizer result;
-            String filepath;
 
             try
             {
-                filepath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+                string[] filelist;
+                filelist = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string filepath in filelist)
+                {
+                    if ((File.GetAttributes(filepath) & FileAttributes.Directory) == FileAttributes.Directory)
+                        ProcessDirectory(filepath);
+                    else
+                        ProcessImage(filepath);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        private bool ProcessDirectory(string dirpath)
+        {
+            bool res = true;
+            foreach (string filepath in Directory.GetFiles(dirpath))
+            {
+                if (File.Exists(filepath))
+                    res = res && ProcessImage(filepath);
+            }
+            return res;
+        }
+
+        private bool ProcessImage(string filepath)
+        {
+            Bitmap original;
+            ImageResizer result;
+            string tmpfile;
+
+            try
+            {
                 original = new Bitmap(filepath);
                 result = new ImageResizer(original);
 
@@ -122,10 +184,16 @@ namespace cuberesize
                     filepath = Path.GetDirectoryName(filepath) + @"\" + Path.GetFileNameWithoutExtension(filepath) + text_filename.Text + @".jpg";
 
                 Directory.CreateDirectory(Path.GetDirectoryName(filepath));
+                do
+                {
+                    tmpfile = Path.GetRandomFileName();
+                } while (File.Exists(tmpfile));
 
                 ImageCodecInfo jpegEncoder = null;
-                foreach (ImageCodecInfo enc in ImageCodecInfo.GetImageEncoders()) {
-                    if(enc.FormatID == ImageFormat.Jpeg.Guid) {
+                foreach (ImageCodecInfo enc in ImageCodecInfo.GetImageEncoders())
+                {
+                    if (enc.FormatID == ImageFormat.Jpeg.Guid)
+                    {
                         jpegEncoder = enc;
                         break;
                     }
@@ -136,7 +204,7 @@ namespace cuberesize
                 if (radio_filesize.Checked)
                 {
                     Int64 min = 0, max = 101;
-                    for (int i = 0 ; i < 7 ; ++i )
+                    for (int i = 0; i < 7; ++i)
                     {
                         Int64 mid = (max + min) / 2;
                         NullStream ns = new NullStream();
@@ -162,12 +230,18 @@ namespace cuberesize
                 EncoderParameter quality = new EncoderParameter(Encoder.Quality, jpgqual);
                 encParams.Param[0] = quality;
 
-                result.Image.Save(filepath, jpegEncoder, encParams);
+                result.Image.Save(tmpfile, jpegEncoder, encParams);
+                Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(tmpfile, filepath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (ArgumentException)
             {
-                //MessageBox.Show(((string[])e.Data.GetData(DataFormats.FileDrop))[0] + " は有効な画像ファイルではありません。");
+                return false;
             }
+            return true;
         }
 
         private void button_cancel_Click(object sender, EventArgs e)
@@ -297,36 +371,47 @@ namespace cuberesize
 
         private void button_save_Click(object sender, EventArgs e)
         {
-            setting.SetInt("width", (int)numeric_width.Value);
-            setting.SetInt("height", (int)numeric_height.Value);
-            setting.SetBool("isquality", radio_quality.Checked);
-            setting.SetInt("quality", (int)numeric_quality.Value);
-            setting.SetInt("filesize", (int)numeric_filesize.Value);
-            setting.SetBool("brightness", check_brightness.Checked);
-            setting.SetBool("saturation", check_saturation.Checked);
-            setting.SetBool("contrast", check_contrast.Checked);
-            setting.SetBool("monochrome", check_monochrome.Checked);
-            setting.SetBool("sepia", check_sepia.Checked);
-            setting.SetBool("isfolder", radio_folder.Checked);
-            setting.SetString("foler", text_folder.Text);
-            setting.SetString("filename", text_filename.Text);
-            setting.SetBool("modifier", combo_filename.SelectedIndex == 0);
+            setting.SetInt(SETTING_WIDTH, (int)numeric_width.Value);
+            setting.SetInt(SETTING_HEIGHT, (int)numeric_height.Value);
+            setting.SetBool(SETTING_IS_QUALITY, radio_quality.Checked);
+            setting.SetInt(SETTING_QUALITY, (int)numeric_quality.Value);
+            setting.SetInt(SETTING_FILESIZE, (int)numeric_filesize.Value);
+            setting.SetBool(SETTING_BRIGHTNESS, check_brightness.Checked);
+            setting.SetBool(SETTING_SATURATION, check_saturation.Checked);
+            setting.SetBool(SETTING_CONTRAST, check_contrast.Checked);
+            setting.SetBool(SETTING_MONOCHROME, check_monochrome.Checked);
+            setting.SetBool(SETTING_SEPIA, check_sepia.Checked);
+            setting.SetBool(SETTING_IS_FOLDER, radio_folder.Checked);
+            setting.SetString(SETTING_FOLDER, text_folder.Text);
+            setting.SetString(SETTING_FILENAME, text_filename.Text);
+            setting.SetBool(SETTING_MODIFIER, combo_filename.SelectedIndex == 0);
 
             ArrayList list = (ArrayList)combo_size.Tag;
             if (presize != null)
             {
-                combo_size.Items.Add(presize.name + " - " + presize.width + "×" + presize.height);
-                list.Add(presize);
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    if (((SizeSelector.ItemInfo)list[i]).id == presize.id && ((SizeSelector.ItemInfo)list[i]).category == presize.category)
+                    {
+                        list.RemoveAt(i);
+                        combo_size.Items.RemoveAt(i);
+                        break;
+                    }
+                }
+                combo_size.Items.Insert(0, presize.name + " - " + presize.width + "×" + presize.height);
+                list.Insert(0, presize);
             }
 
             int num = combo_size.Items.Count;
-            setting.SetInt("list_num", num);
+            setting.SetInt(SETTING_LIST_NUM, num);
             for (int i = 0; i < num; ++i)
             {
                 SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)list[i];
-                setting.SetString("list_name" + i, info.name);
-                setting.SetInt("list_width" + i, info.width);
-                setting.SetInt("list_height" + i, info.height);
+                setting.SetString(SETTING_LIST_ID + i, info.id);
+                setting.SetString(SETTING_LIST_CATEGORY + i, info.category);
+                setting.SetString(SETTING_LIST_NAME + i, info.name);
+                setting.SetInt(SETTING_LIST_WIDTH + i, info.width);
+                setting.SetInt(SETTING_LIST_HEIGHT + i, info.height);
             }
 
             presize = null;
@@ -334,7 +419,7 @@ namespace cuberesize
 
         private void button_size_Click(object sender, EventArgs e)
         {
-            using (SizeSelector selector = new SizeSelector())
+            using (SizeSelector selector = new SizeSelector(SIZE_SELECTOR_LAYOUT_XML))
             {
                 if (selector.ShowDialog(this) == System.Windows.Forms.DialogResult.Cancel)
                     return;

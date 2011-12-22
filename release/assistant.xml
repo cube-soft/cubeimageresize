@@ -1,0 +1,17 @@
+<cuberesize>
+    <category id="general" text="一般">
+        <item id="general_mixi" text="mixi" width="400" height="400" />
+        <item id="general_twitter" text="twitter" width="64" height="64" />
+        <item id="general_facebook" text="facebook" width="64" height="64" />
+    </catogory>
+    <category id="test1" text="テストカテゴリ1">
+        <item id="test1_item1" text="アイテム1" width="640" height="480" />
+        <item id="test1_item2" text="アイテム2" width="180" height="180" />
+        <item id="test1_item3" text="アイテム3" width="64" height="64" />
+    </category>
+    <category id="test2" text="テストカテゴリ2">
+        <item id="test2_item1" text="アイテム1" width="640" height="480" />
+        <item id="test2_item2" text="アイテム2" width="180" height="180" />
+        <item id="test2_item3" text="アイテム3" width="64" height="64" />
+    </category>
+</cuberesize>

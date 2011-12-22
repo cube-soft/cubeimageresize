@@ -101,7 +101,7 @@
             // check_monochrome
             // 
             this.check_monochrome.AutoSize = true;
-            this.check_monochrome.Location = new System.Drawing.Point(127, 22);
+            this.check_monochrome.Location = new System.Drawing.Point(126, 22);
             this.check_monochrome.Name = "check_monochrome";
             this.check_monochrome.Size = new System.Drawing.Size(58, 16);
             this.check_monochrome.TabIndex = 3;
@@ -131,7 +131,7 @@
             // check_brightness
             // 
             this.check_brightness.AutoSize = true;
-            this.check_brightness.Location = new System.Drawing.Point(12, 22);
+            this.check_brightness.Location = new System.Drawing.Point(10, 22);
             this.check_brightness.Name = "check_brightness";
             this.check_brightness.Size = new System.Drawing.Size(70, 16);
             this.check_brightness.TabIndex = 0;
