@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SizeSelector));
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.tableLayout = new System.Windows.Forms.TableLayoutPanel();
@@ -83,6 +84,7 @@
             this.Controls.Add(this.tableLayout);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SizeSelector";
             this.ShowInTaskbar = false;
             this.Text = "サイズ選択";

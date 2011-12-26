@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this._EffectSettingGroupBox = new System.Windows.Forms.GroupBox();
             this.check_sepia = new System.Windows.Forms.CheckBox();
             this.check_monochrome = new System.Windows.Forms.CheckBox();
@@ -43,7 +44,6 @@
             this.button_save = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this._FooterSeparatorLabel = new System.Windows.Forms.Label();
-            this.label_image = new System.Windows.Forms.Label();
             this._SaveSettingGroupBox = new System.Windows.Forms.GroupBox();
             this._SizeSettingGroupBox = new System.Windows.Forms.GroupBox();
             this.numeric_filesize = new System.Windows.Forms.NumericUpDown();
@@ -63,6 +63,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label_image = new System.Windows.Forms.Label();
             this._EffectSettingGroupBox.SuspendLayout();
             this._SaveSettingGroupBox.SuspendLayout();
             this._SizeSettingGroupBox.SuspendLayout();
@@ -226,23 +227,6 @@
             this._FooterSeparatorLabel.Size = new System.Drawing.Size(558, 2);
             this._FooterSeparatorLabel.TabIndex = 24;
             // 
-            // label_image
-            // 
-            this.label_image.AllowDrop = true;
-            this.label_image.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label_image.Image = global::cuberesize.Properties.Resources.draghere;
-            this.label_image.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label_image.Location = new System.Drawing.Point(428, 36);
-            this.label_image.MinimumSize = new System.Drawing.Size(128, 128);
-            this.label_image.Name = "label_image";
-            this.label_image.Padding = new System.Windows.Forms.Padding(0, 40, 0, 0);
-            this.label_image.Size = new System.Drawing.Size(140, 150);
-            this.label_image.TabIndex = 25;
-            this.label_image.Text = "ここに画像データをドラッグ";
-            this.label_image.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_image.DragDrop += new System.Windows.Forms.DragEventHandler(this.label_image_DragDrop);
-            this.label_image.DragEnter += new System.Windows.Forms.DragEventHandler(this.label_image_DragEnter);
-            // 
             // _SaveSettingGroupBox
             // 
             this._SaveSettingGroupBox.Controls.Add(this.radio_filename);
@@ -341,6 +325,7 @@
             this.numeric_quality.Size = new System.Drawing.Size(58, 19);
             this.numeric_quality.TabIndex = 44;
             this.numeric_quality.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numeric_quality.ValueChanged += new System.EventHandler(this.numeric_quality_ValueChanged);
             // 
             // numeric_height
             // 
@@ -435,6 +420,7 @@
             this.combo_quality.Name = "combo_quality";
             this.combo_quality.Size = new System.Drawing.Size(69, 20);
             this.combo_quality.TabIndex = 38;
+            this.combo_quality.SelectedIndexChanged += new System.EventHandler(this.combo_quality_SelectedIndexChanged);
             // 
             // radio_quality
             // 
@@ -485,6 +471,23 @@
             this.label1.TabIndex = 33;
             this.label1.Text = "画像サイズ：";
             // 
+            // label_image
+            // 
+            this.label_image.AllowDrop = true;
+            this.label_image.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_image.Image = global::cuberesize.Properties.Resources.draghere;
+            this.label_image.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label_image.Location = new System.Drawing.Point(428, 36);
+            this.label_image.MinimumSize = new System.Drawing.Size(128, 128);
+            this.label_image.Name = "label_image";
+            this.label_image.Padding = new System.Windows.Forms.Padding(0, 40, 0, 0);
+            this.label_image.Size = new System.Drawing.Size(140, 150);
+            this.label_image.TabIndex = 25;
+            this.label_image.Text = "ここに画像データをドラッグ";
+            this.label_image.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_image.DragDrop += new System.Windows.Forms.DragEventHandler(this.label_image_DragDrop);
+            this.label_image.DragEnter += new System.Windows.Forms.DragEventHandler(this.label_image_DragEnter);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -499,6 +502,7 @@
             this.Controls.Add(this.button_save);
             this.Controls.Add(this._EffectSettingGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "CubeResize";

@@ -186,7 +186,7 @@ namespace cuberesize
                 Directory.CreateDirectory(Path.GetDirectoryName(filepath));
                 do
                 {
-                    tmpfile = Path.GetRandomFileName();
+                    tmpfile = Path.GetDirectoryName(filepath) + @"\" + Path.GetRandomFileName();
                 } while (File.Exists(tmpfile));
 
                 ImageCodecInfo jpegEncoder = null;
