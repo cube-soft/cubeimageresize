@@ -7,8 +7,11 @@ using System.Collections;
 
 namespace cuberesize
 {
-    public partial class MainForm : Form
-    {
+    public partial class MainForm : Form {
+        /* ----------------------------------------------------------------- */
+        /// 定数定義
+        /* ----------------------------------------------------------------- */
+        #region Contant variables
         const string ORGANIZATION_NAME          = "CubeSoft";
         const string APPLICATION_NAME           = "CubeImage Resize";
         const string SIZE_SELECTOR_LAYOUT_XML   = @".\assistant.xml";
@@ -35,10 +38,21 @@ namespace cuberesize
         const string SETTING_LIST_NAME          = "list_name";
         const string SETTING_LIST_WIDTH         = "list_width";
         const string SETTING_LIST_HEIGHT        = "list_height";
+        #endregion
 
+        /* ----------------------------------------------------------------- */
+        /// 変数定義
+        /* ----------------------------------------------------------------- */
+        #region Variables
         Global.Setting.Setting setting;
         SizeSelector.ItemInfo presize = null;
         bool isupdate = false;
+        #endregion
+
+        /* ----------------------------------------------------------------- */
+        /// 初期化
+        /* ----------------------------------------------------------------- */
+        #region Initialize
 
         public MainForm()
         {
@@ -49,13 +63,7 @@ namespace cuberesize
             // サイズに関する初期設定
             numeric_width.Value = setting.GetInt(SETTING_WIDTH, 640);
             numeric_height.Value = setting.GetInt(SETTING_HEIGHT, 480);
-            switch (setting.GetInt(SETTING_RESIZE_METHOD, 1)) {
-                case 0:  radio_resize_force.Checked = true; break;
-                case 1:  radio_resize_aspect.Checked = true; break;
-                case 2:  radio_resize_width.Checked = true; break;
-                case 3:  radio_resize_height.Checked = true; break;
-                default: radio_resize_force.Checked = true; break;
-            }
+            this.SetResizeMethod(setting.GetInt(SETTING_RESIZE_METHOD, 1));
 
             // 画質に関する初期設定
             if (setting.GetBool(SETTING_IS_QUALITY, true))
@@ -63,7 +71,7 @@ namespace cuberesize
             else
                 radio_filesize.Checked = true;
             numeric_quality.Enabled = radio_quality.Checked;
-            numeric_quality.Value = setting.GetInt(SETTING_QUALITY, 100);
+            numeric_quality.Value = setting.GetInt(SETTING_QUALITY, 90);
             combo_quality.Enabled = radio_quality.Checked;
             track_quality.Enabled = radio_quality.Checked;
             numeric_filesize.Enabled = radio_filesize.Checked;
@@ -110,50 +118,12 @@ namespace cuberesize
                 combo_size.SelectedIndex = 0;
         }
 
-        private void label_image_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.All;
-            else
-                e.Effect = DragDropEffects.None;
-        }
+        #endregion
 
-        private void label_image_DragDrop(object sender, DragEventArgs e)
-        {
-            if (radio_folder.Checked)
-            {
-                if (text_folder.Text.Length == 0)
-                {
-                    MessageBox.Show("保存するフォルダ名を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            else
-            {
-                if (text_filename.Text.Length == 0)
-                {
-                    MessageBox.Show("ファイル名に付与するテキストを入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-
-            try
-            {
-                string[] filelist;
-                filelist = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (string filepath in filelist)
-                {
-                    if ((File.GetAttributes(filepath) & FileAttributes.Directory) == FileAttributes.Directory)
-                        ProcessDirectory(filepath);
-                    else
-                        ProcessImage(filepath);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-            }
-        }
+        /* ----------------------------------------------------------------- */
+        /// メイン（変換）処理
+        /* ----------------------------------------------------------------- */
+        #region Convert methods
 
         private bool ProcessDirectory(string dirpath)
         {
@@ -300,135 +270,120 @@ namespace cuberesize
             return true;
         }
 
-        private void button_cancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
+        #endregion
+
+        /* ----------------------------------------------------------------- */
+        /// その他の内部用メソッド群
+        /* ----------------------------------------------------------------- */
+        #region Other utility methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetResizeMethod
+        ///
+        /// <summary>
+        /// ラジオボタンの選択状況からリサイズ方法を表すインデックスを取得
+        /// する．ラジオボタンの内容と対応するインデックスは以下の通り：
+        /// 
+        /// - 指定したサイズで変換する: 0
+        /// - 縦横比を維持する        : 1
+        /// - 幅に合わせる            : 2
+        /// - 高さに合わせる          : 3
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private int GetResizeMethod() {
+            if (radio_resize_force.Checked)       return 0;
+            else if (radio_resize_aspect.Checked) return 1;
+            else if (radio_resize_width.Checked)  return 2;
+            else if (radio_resize_height.Checked) return 3;
+            
+            return 0;
         }
 
-        private void track_quality_Scroll(object sender, EventArgs e)
-        {
-            numeric_quality.Value = track_quality.Value;
-            combo_quality_select();
-        }
-
-        private void numeric_quality_ValueChanged(object sender, EventArgs e)
-        {
-            track_quality.Value = (int)numeric_quality.Value;
-            combo_quality_select();
-        }
-
-        private void combo_quality_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (combo_quality.SelectedIndex)
-            {
-                case 0:
-                    break;
-                case 1:
-                    numeric_quality.Value = 100;
-                    break;
-                case 2:
-                    numeric_quality.Value = 50;
-                    break;
-                case 3:
-                    numeric_quality.Value = 0;
-                    break;
-            }
-        }
-
-        private void combo_quality_select()
-        {
-            switch ((int)numeric_quality.Value)
-            {
-                default:
-                    combo_quality.SelectedIndex = 0;
-                    break;
-                case 100:
-                    combo_quality.SelectedIndex = 1;
-                    break;
-                case 50:
-                    combo_quality.SelectedIndex = 2;
-                    break;
-                case 0:
-                    combo_quality.SelectedIndex = 3;
-                    break;
-            }
-        }
-
-        #region NullStream Class
-
-        private class NullStream : System.IO.Stream
-        {
-            private long len;
-
-            public NullStream()
-            {
-                len = 0;
-            }
-
-            public override bool CanRead
-            {
-                get { return false; }
-            }
-
-            public override bool CanSeek
-            {
-                get { return false; }
-            }
-
-            public override bool CanWrite
-            {
-                get { return true; }
-            }
-
-            public override void Flush()
-            {
-                return;
-            }
-
-            public override long Length
-            {
-                get { return len; }
-            }
-
-            public override long Position
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public override int Read(byte[] buffer, int offset, int count)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override long Seek(long offset, System.IO.SeekOrigin origin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void SetLength(long value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                len += count;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetResizeMethod
+        ///
+        /// <summary>
+        /// 引数に指定されたインデックスに対応するラジオボタン（リサイズ
+        /// 方法用）をチェック状態にする．
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetResizeMethod(int index) {
+            switch (index) {
+                case 0: radio_resize_force.Checked = true; break;
+                case 1: radio_resize_aspect.Checked = true; break;
+                case 2: radio_resize_width.Checked = true; break;
+                case 3: radio_resize_height.Checked = true; break;
+                default: radio_resize_force.Checked = true; break;
             }
         }
 
         #endregion
 
-        private void button_save_Click(object sender, EventArgs e)
-        {
+        /* ----------------------------------------------------------------- */
+        /// ドラッグ&ドロップしたときに実行されるハンドラ
+        /* ----------------------------------------------------------------- */
+        #region Event handlers about Drag & Drop
+
+        private void label_image_DragEnter(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.All;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void label_image_DragDrop(object sender, DragEventArgs e) {
+            if (radio_folder.Checked) {
+                if (text_folder.Text.Length == 0) {
+                    MessageBox.Show("保存するフォルダ名を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else {
+                if (text_filename.Text.Length == 0) {
+                    MessageBox.Show("ファイル名に付与するテキストを入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+
+            try {
+                string[] filelist;
+                filelist = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string filepath in filelist) {
+                    if ((File.GetAttributes(filepath) & FileAttributes.Directory) == FileAttributes.Directory)
+                        ProcessDirectory(filepath);
+                    else
+                        ProcessImage(filepath);
+                }
+            }
+            catch (OperationCanceledException) {
+            }
+        }
+
+        #endregion
+
+        /* ----------------------------------------------------------------- */
+        /// 各種ボタンを押下した時に実行されるハンドラ
+        /* ----------------------------------------------------------------- */
+        #region Event handlers about buttons
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// button_save_Click
+        ///
+        /// <summary>
+        /// 現在の設定をレジストリに保存する．
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void button_save_Click(object sender, EventArgs e) {
             setting.SetInt(SETTING_WIDTH, (int)numeric_width.Value);
             setting.SetInt(SETTING_HEIGHT, (int)numeric_height.Value);
+            setting.SetInt(SETTING_RESIZE_METHOD, this.GetResizeMethod());
             setting.SetBool(SETTING_IS_QUALITY, radio_quality.Checked);
             setting.SetInt(SETTING_QUALITY, (int)numeric_quality.Value);
             setting.SetInt(SETTING_FILESIZE, (int)numeric_filesize.Value);
@@ -443,18 +398,10 @@ namespace cuberesize
             setting.SetBool(SETTING_MODIFIER, combo_filename.SelectedIndex == 0);
             setting.SetBool(SETTING_OVERWRITE, check_overwrite.Checked);
 
-            if (radio_resize_force.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 0);
-            else if (radio_resize_aspect.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 1);
-            else if (radio_resize_width.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 2);
-            else if (radio_resize_height.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 3);
-
             ArrayList list = (ArrayList)combo_size.Tag;
-            if (presize != null)
-            {
-                for (int i = 0; i < list.Count; ++i)
-                {
-                    if (((SizeSelector.ItemInfo)list[i]).id == presize.id && ((SizeSelector.ItemInfo)list[i]).category == presize.category)
-                    {
+            if (presize != null) {
+                for (int i = 0; i < list.Count; ++i) {
+                    if (((SizeSelector.ItemInfo)list[i]).id == presize.id && ((SizeSelector.ItemInfo)list[i]).category == presize.category) {
                         list.RemoveAt(i);
                         combo_size.Items.RemoveAt(i);
                         break;
@@ -466,8 +413,7 @@ namespace cuberesize
 
             int num = combo_size.Items.Count;
             setting.SetInt(SETTING_LIST_NUM, num);
-            for (int i = 0; i < num; ++i)
-            {
+            for (int i = 0; i < num; ++i) {
                 SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)list[i];
                 setting.SetString(SETTING_LIST_ID + i, info.id);
                 setting.SetString(SETTING_LIST_CATEGORY + i, info.category);
@@ -481,10 +427,18 @@ namespace cuberesize
             MessageBox.Show(this, "現在の設定を保存しました。", "CubeImage Resize", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void button_size_Click(object sender, EventArgs e)
-        {
-            using (SizeSelector selector = new SizeSelector(SIZE_SELECTOR_LAYOUT_XML))
-            {
+        /* ----------------------------------------------------------------- */
+        /// button_cancel_Click
+        /* ----------------------------------------------------------------- */
+        private void button_cancel_Click(object sender, EventArgs e) {
+            this.Close();
+        }
+
+        /* ----------------------------------------------------------------- */
+        /// button_size_Click
+        /* ----------------------------------------------------------------- */
+        private void button_size_Click(object sender, EventArgs e) {
+            using (SizeSelector selector = new SizeSelector(SIZE_SELECTOR_LAYOUT_XML)) {
                 if (selector.ShowDialog(this) == System.Windows.Forms.DialogResult.Cancel)
                     return;
                 isupdate = true;
@@ -495,26 +449,31 @@ namespace cuberesize
             }
         }
 
-        private void numeric_wh_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isupdate)
-                presize = null;
-        }
+        #endregion
 
-        private void combo_size_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)((ArrayList)combo_size.Tag)[combo_size.SelectedIndex];
-            numeric_width.Value = info.width;
-            numeric_height.Value = info.height;
-        }
+        /* ----------------------------------------------------------------- */
+        /// ラジオボタンのチェック状態が変更された時に実行されるハンドラ
+        /* ----------------------------------------------------------------- */
+        #region Event handlers about radio buttons' CheckedChanged
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ラジオボタン形式の選択肢は，選択されていない項目のサブ項目は
-        /// ユーザによる操作を受け付けないようにしておく．
+        /// radio_resize_method_CheckedChanged
+        /// 
+        /// <summary>
+        /// リサイズ方法が変更された時に，設定の必要のない項目を無効に
+        /// する．現在のところ，無効に設定する条件は以下の通り：
+        /// 
+        /// - 幅  : 高さに合わせる (index = 3) が指定されていると無効
+        /// - 高さ: 幅に合わせる (index = 2) が指定されていると無効
+        /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        #region Event handlers about radio buttons' CheckedChanged
+        private void radio_resize_method_CheckedChanged(object sender, EventArgs e) {
+            var index = this.GetResizeMethod();
+            numeric_width.Enabled = (index != 3);
+            numeric_height.Enabled = (index != 2);
+        }
 
         private void radio_folder_CheckedChanged(object sender, EventArgs e) {
             var control = sender as RadioButton;
@@ -542,51 +501,133 @@ namespace cuberesize
             if (control == null) return;
             numeric_filesize.Enabled = control.Checked;
         }
-        
+
         #endregion
 
+        /* ----------------------------------------------------------------- */
+        /// その他のイベントハンドラ
+        /* ----------------------------------------------------------------- */
+        #region Other event handlers
+
+        private void track_quality_Scroll(object sender, EventArgs e)
+        {
+            numeric_quality.Value = track_quality.Value;
+            combo_quality_select();
+        }
+
+        private void numeric_quality_ValueChanged(object sender, EventArgs e)
+        {
+            track_quality.Value = (int)numeric_quality.Value;
+            combo_quality_select();
+        }
+
+        private void combo_quality_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (combo_quality.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    numeric_quality.Value = 90;
+                    break;
+                case 2:
+                    numeric_quality.Value = 70;
+                    break;
+                case 3:
+                    numeric_quality.Value = 30;
+                    break;
+            }
+        }
+
+        private void combo_quality_select()
+        {
+            switch ((int)numeric_quality.Value)
+            {
+                default:
+                    combo_quality.SelectedIndex = 0;
+                    break;
+                case 90:
+                    combo_quality.SelectedIndex = 1;
+                    break;
+                case 70:
+                    combo_quality.SelectedIndex = 2;
+                    break;
+                case 30:
+                    combo_quality.SelectedIndex = 3;
+                    break;
+            }
+        }
+
+        private void numeric_wh_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isupdate)
+                presize = null;
+        }
+
+        private void combo_size_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)((ArrayList)combo_size.Tag)[combo_size.SelectedIndex];
+            numeric_width.Value = info.width;
+            numeric_height.Value = info.height;
+        }
+
+        #endregion
 
         /* ----------------------------------------------------------------- */
-        ///
-        /// 「幅に合わせる」，「高さに合わせる」が選択された場合，
-        /// 使用されない項目を無効に設定しておく．
-        /// 
+        /// NullStream
         /* ----------------------------------------------------------------- */
-        #region Event handlers about resize method
+        #region NullStream Class
 
-        private void radio_resize_force_CheckedChanged(object sender, EventArgs e) {
-            var control = sender as RadioButton;
-            if (control == null) return;
-            if (control.Checked) {
-                numeric_width.Enabled = true;
-                numeric_height.Enabled = true;
+        private class NullStream : System.IO.Stream {
+            private long len;
+
+            public NullStream() {
+                len = 0;
             }
-        }
 
-        private void radio_resize_aspect_CheckedChanged(object sender, EventArgs e) {
-            var control = sender as RadioButton;
-            if (control == null) return;
-            if (control.Checked) {
-                numeric_width.Enabled = true;
-                numeric_height.Enabled = true;
+            public override bool CanRead {
+                get { return false; }
             }
-        }
 
-        private void radio_resize_width_CheckedChanged(object sender, EventArgs e) {
-            var control = sender as RadioButton;
-            if (control == null) return;
-            if (control.Checked) {
-                numeric_width.Enabled = true;
-                numeric_height.Enabled = false;
+            public override bool CanSeek {
+                get { return false; }
             }
-        }
 
-        private void radio_resize_height_CheckedChanged(object sender, EventArgs e) {
-            var control = sender as RadioButton;
-            if (control == null) return;
-            if (control.Checked) {
-                numeric_width.Enabled = false;
-                numeric_height.Enabled = true;
+            public override bool CanWrite {
+                get { return true; }
+            }
+
+            public override void Flush() {
+                return;
+            }
+
+            public override long Length {
+                get { return len; }
+            }
+
+            public override long Position {
+                get {
+                    throw new NotImplementedException();
+                }
+                set {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public override int Read(byte[] buffer, int offset, int count) {
+                throw new NotImplementedException();
+            }
+
+            public override long Seek(long offset, System.IO.SeekOrigin origin) {
+                throw new NotImplementedException();
+            }
+
+            public override void SetLength(long value) {
+                throw new NotImplementedException();
+            }
+
+            public override void Write(byte[] buffer, int offset, int count) {
+                len += count;
             }
         }
 

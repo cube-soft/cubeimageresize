@@ -44,8 +44,13 @@
             this.button_save = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this._SaveSettingGroupBox = new System.Windows.Forms.GroupBox();
+            this.check_overwrite = new System.Windows.Forms.CheckBox();
             this._SizeSettingGroupBox = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.radio_resize_height = new System.Windows.Forms.RadioButton();
+            this.radio_resize_width = new System.Windows.Forms.RadioButton();
+            this.radio_resize_aspect = new System.Windows.Forms.RadioButton();
+            this.radio_resize_force = new System.Windows.Forms.RadioButton();
             this.numeric_filesize = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button_size = new System.Windows.Forms.Button();
@@ -63,11 +68,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label_image = new System.Windows.Forms.Label();
-            this.radio_resize_height = new System.Windows.Forms.RadioButton();
-            this.radio_resize_width = new System.Windows.Forms.RadioButton();
-            this.radio_resize_aspect = new System.Windows.Forms.RadioButton();
-            this.radio_resize_force = new System.Windows.Forms.RadioButton();
-            this.check_overwrite = new System.Windows.Forms.CheckBox();
             this._EffectSettingGroupBox.SuspendLayout();
             this._SaveSettingGroupBox.SuspendLayout();
             this._SizeSettingGroupBox.SuspendLayout();
@@ -239,6 +239,16 @@
             this._SaveSettingGroupBox.TabStop = false;
             this._SaveSettingGroupBox.Text = "保存方法";
             // 
+            // check_overwrite
+            // 
+            this.check_overwrite.AutoSize = true;
+            this.check_overwrite.Location = new System.Drawing.Point(10, 110);
+            this.check_overwrite.Name = "check_overwrite";
+            this.check_overwrite.Size = new System.Drawing.Size(109, 16);
+            this.check_overwrite.TabIndex = 22;
+            this.check_overwrite.Text = "上書き確認を行う";
+            this.check_overwrite.UseVisualStyleBackColor = true;
+            // 
             // _SizeSettingGroupBox
             // 
             this._SizeSettingGroupBox.Controls.Add(this.panel2);
@@ -272,6 +282,54 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(177, 90);
             this.panel2.TabIndex = 47;
+            // 
+            // radio_resize_height
+            // 
+            this.radio_resize_height.AutoSize = true;
+            this.radio_resize_height.Location = new System.Drawing.Point(6, 68);
+            this.radio_resize_height.Name = "radio_resize_height";
+            this.radio_resize_height.Size = new System.Drawing.Size(93, 16);
+            this.radio_resize_height.TabIndex = 54;
+            this.radio_resize_height.TabStop = true;
+            this.radio_resize_height.Text = "高さに合わせる";
+            this.radio_resize_height.UseVisualStyleBackColor = true;
+            this.radio_resize_height.CheckedChanged += new System.EventHandler(this.radio_resize_method_CheckedChanged);
+            // 
+            // radio_resize_width
+            // 
+            this.radio_resize_width.AutoSize = true;
+            this.radio_resize_width.Location = new System.Drawing.Point(6, 46);
+            this.radio_resize_width.Name = "radio_resize_width";
+            this.radio_resize_width.Size = new System.Drawing.Size(85, 16);
+            this.radio_resize_width.TabIndex = 53;
+            this.radio_resize_width.TabStop = true;
+            this.radio_resize_width.Text = "幅に合わせる";
+            this.radio_resize_width.UseVisualStyleBackColor = true;
+            this.radio_resize_width.CheckedChanged += new System.EventHandler(this.radio_resize_method_CheckedChanged);
+            // 
+            // radio_resize_aspect
+            // 
+            this.radio_resize_aspect.AutoSize = true;
+            this.radio_resize_aspect.Location = new System.Drawing.Point(6, 24);
+            this.radio_resize_aspect.Name = "radio_resize_aspect";
+            this.radio_resize_aspect.Size = new System.Drawing.Size(111, 16);
+            this.radio_resize_aspect.TabIndex = 52;
+            this.radio_resize_aspect.TabStop = true;
+            this.radio_resize_aspect.Text = "縦横比を維持する";
+            this.radio_resize_aspect.UseVisualStyleBackColor = true;
+            this.radio_resize_aspect.CheckedChanged += new System.EventHandler(this.radio_resize_method_CheckedChanged);
+            // 
+            // radio_resize_force
+            // 
+            this.radio_resize_force.AutoSize = true;
+            this.radio_resize_force.Location = new System.Drawing.Point(6, 4);
+            this.radio_resize_force.Name = "radio_resize_force";
+            this.radio_resize_force.Size = new System.Drawing.Size(147, 16);
+            this.radio_resize_force.TabIndex = 51;
+            this.radio_resize_force.TabStop = true;
+            this.radio_resize_force.Text = "指定したサイズで変換する";
+            this.radio_resize_force.UseVisualStyleBackColor = true;
+            this.radio_resize_force.CheckedChanged += new System.EventHandler(this.radio_resize_method_CheckedChanged);
             // 
             // numeric_filesize
             // 
@@ -484,64 +542,6 @@
             this.label_image.TabIndex = 25;
             this.label_image.Text = "ここに画像データをドラッグ";
             this.label_image.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // radio_resize_height
-            // 
-            this.radio_resize_height.AutoSize = true;
-            this.radio_resize_height.Location = new System.Drawing.Point(6, 68);
-            this.radio_resize_height.Name = "radio_resize_height";
-            this.radio_resize_height.Size = new System.Drawing.Size(93, 16);
-            this.radio_resize_height.TabIndex = 54;
-            this.radio_resize_height.TabStop = true;
-            this.radio_resize_height.Text = "高さに合わせる";
-            this.radio_resize_height.UseVisualStyleBackColor = true;
-            this.radio_resize_height.CheckedChanged += new System.EventHandler(this.radio_resize_height_CheckedChanged);
-            // 
-            // radio_resize_width
-            // 
-            this.radio_resize_width.AutoSize = true;
-            this.radio_resize_width.Location = new System.Drawing.Point(6, 46);
-            this.radio_resize_width.Name = "radio_resize_width";
-            this.radio_resize_width.Size = new System.Drawing.Size(85, 16);
-            this.radio_resize_width.TabIndex = 53;
-            this.radio_resize_width.TabStop = true;
-            this.radio_resize_width.Text = "幅に合わせる";
-            this.radio_resize_width.UseVisualStyleBackColor = true;
-            this.radio_resize_width.CheckedChanged += new System.EventHandler(this.radio_resize_width_CheckedChanged);
-            // 
-            // radio_resize_aspect
-            // 
-            this.radio_resize_aspect.AutoSize = true;
-            this.radio_resize_aspect.Location = new System.Drawing.Point(6, 24);
-            this.radio_resize_aspect.Name = "radio_resize_aspect";
-            this.radio_resize_aspect.Size = new System.Drawing.Size(111, 16);
-            this.radio_resize_aspect.TabIndex = 52;
-            this.radio_resize_aspect.TabStop = true;
-            this.radio_resize_aspect.Text = "縦横比を維持する";
-            this.radio_resize_aspect.UseVisualStyleBackColor = true;
-            this.radio_resize_aspect.CheckedChanged += new System.EventHandler(this.radio_resize_aspect_CheckedChanged);
-            // 
-            // radio_resize_force
-            // 
-            this.radio_resize_force.AutoSize = true;
-            this.radio_resize_force.Location = new System.Drawing.Point(6, 4);
-            this.radio_resize_force.Name = "radio_resize_force";
-            this.radio_resize_force.Size = new System.Drawing.Size(147, 16);
-            this.radio_resize_force.TabIndex = 51;
-            this.radio_resize_force.TabStop = true;
-            this.radio_resize_force.Text = "指定したサイズで変換する";
-            this.radio_resize_force.UseVisualStyleBackColor = true;
-            this.radio_resize_force.CheckedChanged += new System.EventHandler(this.radio_resize_force_CheckedChanged);
-            // 
-            // check_overwrite
-            // 
-            this.check_overwrite.AutoSize = true;
-            this.check_overwrite.Location = new System.Drawing.Point(10, 110);
-            this.check_overwrite.Name = "check_overwrite";
-            this.check_overwrite.Size = new System.Drawing.Size(109, 16);
-            this.check_overwrite.TabIndex = 22;
-            this.check_overwrite.Text = "上書き確認を行う";
-            this.check_overwrite.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
