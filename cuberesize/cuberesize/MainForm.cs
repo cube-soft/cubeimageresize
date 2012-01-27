@@ -38,6 +38,7 @@ namespace cuberesize
         const string SETTING_LIST_NAME          = "list_name";
         const string SETTING_LIST_WIDTH         = "list_width";
         const string SETTING_LIST_HEIGHT        = "list_height";
+        const string SETTING_LIST_METHOD        = "list_method";
         #endregion
 
         /* ----------------------------------------------------------------- */
@@ -109,7 +110,8 @@ namespace cuberesize
                     setting.GetString(SETTING_LIST_CATEGORY + i, ""),
                     setting.GetString(SETTING_LIST_NAME + i, ""),
                     setting.GetInt(SETTING_LIST_WIDTH + i, 0),
-                    setting.GetInt(SETTING_LIST_HEIGHT + i, 0));
+                    setting.GetInt(SETTING_LIST_HEIGHT + i, 0),
+                    setting.GetInt(SETTING_LIST_METHOD + i, 1));
                 combo_size.Items.Add(info.category + " - " + info.name);
                 list.Add(info);
             }
@@ -420,6 +422,7 @@ namespace cuberesize
                 setting.SetString(SETTING_LIST_NAME + i, info.name);
                 setting.SetInt(SETTING_LIST_WIDTH + i, info.width);
                 setting.SetInt(SETTING_LIST_HEIGHT + i, info.height);
+                setting.SetInt(SETTING_LIST_METHOD + i, info.method);
             }
 
             presize = null;

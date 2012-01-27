@@ -17,6 +17,7 @@ namespace cuberesize
         private const string CUBERESIZE_TEXT_TAG = "text";
         private const string CUBERESIZE_WIDTH_TAG = "width";
         private const string CUBERESIZE_HEIGHT_TAG = "height";
+        private const string CUBERESIZE_METHOD_TAG = "method";
 
         public class ItemInfo
         {
@@ -60,7 +61,7 @@ namespace cuberesize
                 for (int i = 0; i < tableLayout.RowCount; ++i)
                     if (((RadioButton)tableLayout.GetControlFromPosition(0, i)).Checked)
                         return (ItemInfo)((ComboBox)tableLayout.GetControlFromPosition(1, i)).SelectedItem;
-                return new ItemInfo(null, null, null, 0, 0);
+                return new ItemInfo(null, null, null, 0, 0, 0);
             }
         }
 
@@ -147,6 +148,8 @@ namespace cuberesize
                             string name = null;
                             int width = 0;
                             int height = 0;
+                            int method = 1; // 縦横比を維持
+
                             do
                             {
                                 switch (xmlReader.Name)
@@ -166,9 +169,13 @@ namespace cuberesize
                                     case CUBERESIZE_HEIGHT_TAG:
                                         height = Convert.ToInt32(xmlReader.Value);
                                         break;
+                                    case CUBERESIZE_METHOD_TAG:
+                                        method = Convert.ToInt32(xmlReader.Value);
+                                        break;
+                                        
                                 }
                             } while (xmlReader.MoveToNextAttribute());
-                            itemComboBox.Items.Add(new ItemInfo(id, categoryCheckBox.Text, name, width, height));
+                            itemComboBox.Items.Add(new ItemInfo(id, categoryCheckBox.Text, name, width, height, method));
                         }
                         break;
 
