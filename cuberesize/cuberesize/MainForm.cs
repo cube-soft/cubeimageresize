@@ -435,7 +435,14 @@ namespace cuberesize
         }
 
         /* ----------------------------------------------------------------- */
+        ///
         /// button_size_Click
+        ///
+        /// <summary>
+        /// アシスタント機能（「他の設定サイズより選ぶ」）を通じて画像
+        /// サイズを設定する．
+        /// </summary>
+        ///
         /* ----------------------------------------------------------------- */
         private void button_size_Click(object sender, EventArgs e) {
             using (SizeSelector selector = new SizeSelector(SIZE_SELECTOR_LAYOUT_XML)) {
@@ -445,6 +452,7 @@ namespace cuberesize
                 presize = selector.SelectedItem;
                 numeric_width.Value = presize.width;
                 numeric_height.Value = presize.height;
+                this.SetResizeMethod(presize.method);
                 isupdate = false;
             }
         }
