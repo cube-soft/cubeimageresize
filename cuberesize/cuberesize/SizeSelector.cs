@@ -22,22 +22,34 @@ namespace cuberesize
         {
             public int width { get; private set; }
             public int height { get; private set; }
+            public int method { get; private set; }
             public string category { get; private set; }
             public string id { get; private set; }
             public string name { get; private set; }
 
-            public ItemInfo(string id, string category, string name, int width, int height)
+
+            /// デフォルトは method = 1 (縦横比を維持する)
+            public ItemInfo(string id, string category, string name, int width, int height) {
+                this.Initialize(id, category, name, width, height, 1);
+            }
+
+            public ItemInfo(string id, string category, string name, int width, int height, int method)
             {
-                this.id = id;
-                this.category = category;
-                this.width = width;
-                this.height = height;
-                this.name = name;
+                this.Initialize(id, category, name, width, height, method);
             }
 
             public override string ToString()
             {
                 return name;
+            }
+
+            private void Initialize(string id, string category, string name, int width, int height, int method) {
+                this.id = id;
+                this.category = category;
+                this.width = width;
+                this.height = height;
+                this.method = method;
+                this.name = name;
             }
         }
 
@@ -88,8 +100,9 @@ namespace cuberesize
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(this, e.Message, "CubeImage Resize エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -97,7 +110,8 @@ namespace cuberesize
         {
             RadioButton categoryCheckBox = new RadioButton();
             ComboBox itemComboBox = new ComboBox();
-
+            itemComboBox.Dock = DockStyle.Fill;
+            
             categoryCheckBox.CheckedChanged += new EventHandler(categoryCheckBox_CheckedChanged);
             itemComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             if (tableLayout.GetControlFromPosition(0, tableLayout.RowCount - 1) != null)

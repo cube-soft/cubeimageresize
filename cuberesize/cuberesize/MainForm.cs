@@ -10,11 +10,12 @@ namespace cuberesize
     public partial class MainForm : Form
     {
         const string ORGANIZATION_NAME          = "CubeSoft";
-        const string APPLICATION_NAME           = "CubeResize";
+        const string APPLICATION_NAME           = "CubeImage Resize";
         const string SIZE_SELECTOR_LAYOUT_XML   = @".\assistant.xml";
 
         const string SETTING_WIDTH              = "width";
         const string SETTING_HEIGHT             = "height";
+        const string SETTING_RESIZE_METHOD      = "resize_method";
         const string SETTING_IS_QUALITY         = "isquality";
         const string SETTING_QUALITY            = "quality";
         const string SETTING_FILESIZE           = "filesize";
@@ -27,6 +28,7 @@ namespace cuberesize
         const string SETTING_FOLDER             = "folder";
         const string SETTING_FILENAME           = "filename";
         const string SETTING_MODIFIER           = "modifier";
+        const string SETTING_OVERWRITE          = "overwrite";
         const string SETTING_LIST_NUM           = "list_num";
         const string SETTING_LIST_ID            = "list_id";
         const string SETTING_LIST_CATEGORY      = "list_category";
@@ -44,29 +46,51 @@ namespace cuberesize
             setting = new Global.Setting.Setting(ORGANIZATION_NAME, APPLICATION_NAME);
             this.FormClosed += (sender,e) => setting.Dispose();
 
+            // サイズに関する初期設定
             numeric_width.Value = setting.GetInt(SETTING_WIDTH, 640);
             numeric_height.Value = setting.GetInt(SETTING_HEIGHT, 480);
+            switch (setting.GetInt(SETTING_RESIZE_METHOD, 1)) {
+                case 0:  radio_resize_force.Checked = true; break;
+                case 1:  radio_resize_aspect.Checked = true; break;
+                case 2:  radio_resize_width.Checked = true; break;
+                case 3:  radio_resize_height.Checked = true; break;
+                default: radio_resize_force.Checked = true; break;
+            }
+
+            // 画質に関する初期設定
             if (setting.GetBool(SETTING_IS_QUALITY, true))
                 radio_quality.Checked = true;
             else
                 radio_filesize.Checked = true;
+            numeric_quality.Enabled = radio_quality.Checked;
             numeric_quality.Value = setting.GetInt(SETTING_QUALITY, 100);
+            combo_quality.Enabled = radio_quality.Checked;
+            track_quality.Enabled = radio_quality.Checked;
+            numeric_filesize.Enabled = radio_filesize.Checked;
             numeric_filesize.Value = setting.GetInt(SETTING_FILESIZE, 40);
+
+            // 画像エフェクトに関する初期設定
             check_brightness.Checked = setting.GetBool(SETTING_BRIGHTNESS, false);
             check_saturation.Checked = setting.GetBool(SETTING_SATURATION, false);
             check_contrast.Checked = setting.GetBool(SETTING_CONTRAST, false);
             check_monochrome.Checked = setting.GetBool(SETTING_MONOCHROME, false);
             check_sepia.Checked = setting.GetBool(SETTING_SEPIA, false);
-            if (setting.GetBool(SETTING_IS_FOLDER, true))
+
+            // 保存方法に関する初期設定
+            if (setting.GetBool(SETTING_IS_FOLDER, false))
                 radio_folder.Checked = true;
             else
                 radio_filename.Checked = true;
-            text_folder.Text = setting.GetString(SETTING_FOLDER, "");
-            text_filename.Text = setting.GetString(SETTING_FILENAME, "");
-            if (setting.GetBool(SETTING_MODIFIER, true))
+            text_folder.Enabled = radio_folder.Checked;
+            text_folder.Text = setting.GetString(SETTING_FOLDER, "resize");
+            text_filename.Enabled = radio_filename.Checked;
+            text_filename.Text = setting.GetString(SETTING_FILENAME, "-resize");
+            combo_filename.Enabled = radio_filename.Checked;
+            if (setting.GetBool(SETTING_MODIFIER, false))
                 combo_filename.SelectedIndex = 0;
             else
                 combo_filename.SelectedIndex = 1;
+            check_overwrite.Checked = setting.GetBool(SETTING_OVERWRITE, true);
 
             ArrayList list = new ArrayList();
             int num = setting.GetInt(SETTING_LIST_NUM, 0);
@@ -78,7 +102,7 @@ namespace cuberesize
                     setting.GetString(SETTING_LIST_NAME + i, ""),
                     setting.GetInt(SETTING_LIST_WIDTH + i, 0),
                     setting.GetInt(SETTING_LIST_HEIGHT + i, 0));
-                combo_size.Items.Add(info.name + " - " + info.width + "×" + info.height);
+                combo_size.Items.Add(info.category + " - " + info.name);
                 list.Add(info);
             }
             combo_size.Tag = list;
@@ -154,7 +178,28 @@ namespace cuberesize
                 result = new ImageResizer(original);
 
                 // resize
-                result.Resize((int)numeric_width.Value, (int)numeric_height.Value);
+                var width = (int)numeric_width.Value;
+                var height = (int)numeric_height.Value;
+
+                // サイズの変更方法にしたがって変更後サイズを決定する．
+                // 指定可能なサイズ変更方法は以下の通り:
+                //  radio_resize_force : 指定された幅x高さで強制的に変更する
+                //  radio_resize_aspect: 縦横比を維持して変更する
+                //  radio_resize_width : 指定された幅に合わせて変更する
+                //  radio_reisze_height: 指定された高さに合わせて変更する
+                if (radio_resize_aspect.Checked) {
+                    if (width / (double)original.Width < height / (double)original.Height) {
+                        height = (int)(width * (original.Height / (double)original.Width));
+                    }
+                    else width = (int)(height * (original.Width / (double)original.Height));
+                }
+                else if (radio_resize_width.Checked) {
+                    height = (int)(original.Height * (width / (double)original.Width));
+                }
+                else if (radio_resize_height.Checked) {
+                    width = (int)(original.Width * (height / (double)original.Height));
+                }
+                result.Resize(width, height);
 
                 // UpBrightness
                 if (check_brightness.Checked)
@@ -385,6 +430,12 @@ namespace cuberesize
             setting.SetString(SETTING_FOLDER, text_folder.Text);
             setting.SetString(SETTING_FILENAME, text_filename.Text);
             setting.SetBool(SETTING_MODIFIER, combo_filename.SelectedIndex == 0);
+            setting.SetBool(SETTING_OVERWRITE, check_overwrite.Checked);
+
+            if (radio_resize_force.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 0);
+            else if (radio_resize_aspect.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 1);
+            else if (radio_resize_width.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 2);
+            else if (radio_resize_height.Checked) setting.SetInt(SETTING_RESIZE_METHOD, 3);
 
             ArrayList list = (ArrayList)combo_size.Tag;
             if (presize != null)
@@ -415,6 +466,8 @@ namespace cuberesize
             }
 
             presize = null;
+
+            MessageBox.Show(this, "現在の設定を保存しました。", "CubeImage Resize", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void button_size_Click(object sender, EventArgs e)
@@ -443,5 +496,89 @@ namespace cuberesize
             numeric_width.Value = info.width;
             numeric_height.Value = info.height;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ラジオボタン形式の選択肢は，選択されていない項目のサブ項目は
+        /// ユーザによる操作を受け付けないようにしておく．
+        /// 
+        /* ----------------------------------------------------------------- */
+        #region Event handlers about radio buttons' CheckedChanged
+
+        private void radio_folder_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            text_folder.Enabled = control.Checked;
+        }
+
+        private void radio_filename_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            text_filename.Enabled = control.Checked;
+            combo_filename.Enabled = control.Checked;
+        }
+
+        private void radio_quality_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            numeric_quality.Enabled = control.Checked;
+            combo_quality.Enabled = control.Checked;
+            track_quality.Enabled = control.Checked;
+        }
+
+        private void radio_filesize_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            numeric_filesize.Enabled = control.Checked;
+        }
+        
+        #endregion
+
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// 「幅に合わせる」，「高さに合わせる」が選択された場合，
+        /// 使用されない項目を無効に設定しておく．
+        /// 
+        /* ----------------------------------------------------------------- */
+        #region Event handlers about resize method
+
+        private void radio_resize_force_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            if (control.Checked) {
+                numeric_width.Enabled = true;
+                numeric_height.Enabled = true;
+            }
+        }
+
+        private void radio_resize_aspect_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            if (control.Checked) {
+                numeric_width.Enabled = true;
+                numeric_height.Enabled = true;
+            }
+        }
+
+        private void radio_resize_width_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            if (control.Checked) {
+                numeric_width.Enabled = true;
+                numeric_height.Enabled = false;
+            }
+        }
+
+        private void radio_resize_height_CheckedChanged(object sender, EventArgs e) {
+            var control = sender as RadioButton;
+            if (control == null) return;
+            if (control.Checked) {
+                numeric_width.Enabled = false;
+                numeric_height.Enabled = true;
+            }
+        }
+
+        #endregion
     }
 }
