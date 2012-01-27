@@ -231,7 +231,7 @@ namespace cuberesize
                 Directory.CreateDirectory(Path.GetDirectoryName(filepath));
                 do
                 {
-                    tmpfile = Path.GetDirectoryName(filepath) + @"\" + Path.GetRandomFileName() + ".jpg";
+                    tmpfile = Path.GetDirectoryName(filepath) + @"\" + Path.GetRandomFileName() + @"\" + Path.GetFileName(filepath);
                 } while (File.Exists(tmpfile));
 
                 ImageCodecInfo jpegEncoder = null;
@@ -275,11 +275,19 @@ namespace cuberesize
                 EncoderParameter quality = new EncoderParameter(Encoder.Quality, jpgqual);
                 encParams.Param[0] = quality;
 
+                if (!Directory.Exists(Path.GetDirectoryName(tmpfile))) Directory.CreateDirectory(Path.GetDirectoryName(tmpfile));
                 result.Image.Save(tmpfile, jpegEncoder, encParams);
                 if (check_overwrite.Checked) {
-                    Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(tmpfile, filepath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs);
+                    try {
+                        Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(tmpfile, filepath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs);
+                    }
+                    catch (OperationCanceledException /* err */) {
+                        // 後で一時ディレクトリごと消す処理が走るので，ここでは何もしない．
+                        // File.Delete(Path.GetDirectoryName(tmpfile));
+                    }
                 }
                 else System.IO.File.Move(tmpfile, filepath);
+                Directory.Delete(Path.GetDirectoryName(tmpfile), true);
             }
             catch (OperationCanceledException)
             {
