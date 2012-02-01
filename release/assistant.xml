@@ -19,11 +19,12 @@
 		<item id="mobile-wvga-wide" text="GALAXY S II/HTC Desire 他 (960×800/壁紙)" width="960" height="800" />
 		<item id="mobile-wvga-plus" text="Xperia Acro/REGZA Phone 他 (480×854)" width="480" height="854" />
 		<item id="mobile-wvga-plus-wide" text="Xperia Acro/REGZA Phone 他 (960×854/壁紙)" width="960" height="854" />
-		<item id="aquos" text="AQUOS PHONE 他 (540×960)" width="540" height="960" />
-		<item id="aquos" text="AQUOS PHONE 他 (1080×960/壁紙)" width="1080" height="960" />
+		<item id="aquos-phone" text="AQUOS PHONE 他 (540×960)" width="540" height="960" />
+		<item id="aquos-phone-wide" text="AQUOS PHONE 他 (1080×960/壁紙)" width="1080" height="960" />
 		<item id="iphone-3gs" text="iPhone 3GS/iPod Touch 他 (320×480)" width="320" height="480" />
 		<item id="iphone-4s" text="iPhone 4S/IS03 他 (640×960)" width="640" height="960" />
 		<item id="galaxy-tab" text="GALAXY Tab 他 (600×1024)" width="600" height="1024" />
+		<item id="galaxy-tab-wide" text="GALAXY Tab 他 (1200×1024/壁紙)" width="1200" height="1024" />
 	</category>
     <category id="general" text="その他">
         <item id="wvga" text="WVGA (800×480)" width="800" height="480" />
