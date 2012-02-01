@@ -110,6 +110,7 @@ namespace cuberesize
         private void CreateCategoryWindow(XmlReader xmlReader)
         {
             RadioButton categoryCheckBox = new RadioButton();
+            categoryCheckBox.Dock = DockStyle.Top;
             ComboBox itemComboBox = new ComboBox();
             itemComboBox.Dock = DockStyle.Fill;
             

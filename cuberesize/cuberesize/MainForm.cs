@@ -45,9 +45,9 @@ namespace cuberesize
         /// 変数定義
         /* ----------------------------------------------------------------- */
         #region Variables
-        Global.Setting.Setting setting;
-        SizeSelector.ItemInfo presize = null;
-        bool isupdate = false;
+        Global.Setting.Setting _setting;
+        SizeSelector.ItemInfo _presize = null;
+        bool _isupdate = false;
         #endregion
 
         /* ----------------------------------------------------------------- */
@@ -58,66 +58,67 @@ namespace cuberesize
         public MainForm()
         {
             InitializeComponent();
-            setting = new Global.Setting.Setting(ORGANIZATION_NAME, APPLICATION_NAME);
-            this.FormClosed += (sender,e) => setting.Dispose();
+            _setting = new Global.Setting.Setting(ORGANIZATION_NAME, APPLICATION_NAME);
+            this.FormClosed += (sender,e) => _setting.Dispose();
 
             // サイズに関する初期設定
-            numeric_width.Value = setting.GetInt(SETTING_WIDTH, 640);
-            numeric_height.Value = setting.GetInt(SETTING_HEIGHT, 480);
-            this.SetResizeMethod(setting.GetInt(SETTING_RESIZE_METHOD, 1));
+            numeric_width.Value = _setting.GetInt(SETTING_WIDTH, 640);
+            numeric_height.Value = _setting.GetInt(SETTING_HEIGHT, 480);
+            this.SetResizeMethod(_setting.GetInt(SETTING_RESIZE_METHOD, 1));
 
             // 画質に関する初期設定
-            if (setting.GetBool(SETTING_IS_QUALITY, true))
+            if (_setting.GetBool(SETTING_IS_QUALITY, true))
                 radio_quality.Checked = true;
             else
                 radio_filesize.Checked = true;
             numeric_quality.Enabled = radio_quality.Checked;
-            numeric_quality.Value = setting.GetInt(SETTING_QUALITY, 90);
+            numeric_quality.Value = _setting.GetInt(SETTING_QUALITY, 90);
             combo_quality.Enabled = radio_quality.Checked;
             track_quality.Enabled = radio_quality.Checked;
             numeric_filesize.Enabled = radio_filesize.Checked;
-            numeric_filesize.Value = setting.GetInt(SETTING_FILESIZE, 40);
+            numeric_filesize.Value = _setting.GetInt(SETTING_FILESIZE, 40);
 
             // 画像エフェクトに関する初期設定
-            check_brightness.Checked = setting.GetBool(SETTING_BRIGHTNESS, false);
-            check_saturation.Checked = setting.GetBool(SETTING_SATURATION, false);
-            check_contrast.Checked = setting.GetBool(SETTING_CONTRAST, false);
-            check_monochrome.Checked = setting.GetBool(SETTING_MONOCHROME, false);
-            check_sepia.Checked = setting.GetBool(SETTING_SEPIA, false);
+            check_brightness.Checked = _setting.GetBool(SETTING_BRIGHTNESS, false);
+            check_saturation.Checked = _setting.GetBool(SETTING_SATURATION, false);
+            check_contrast.Checked = _setting.GetBool(SETTING_CONTRAST, false);
+            check_monochrome.Checked = _setting.GetBool(SETTING_MONOCHROME, false);
+            check_sepia.Checked = _setting.GetBool(SETTING_SEPIA, false);
 
             // 保存方法に関する初期設定
-            if (setting.GetBool(SETTING_IS_FOLDER, false))
+            if (_setting.GetBool(SETTING_IS_FOLDER, false))
                 radio_folder.Checked = true;
             else
                 radio_filename.Checked = true;
             text_folder.Enabled = radio_folder.Checked;
-            text_folder.Text = setting.GetString(SETTING_FOLDER, "resize");
+            text_folder.Text = _setting.GetString(SETTING_FOLDER, "resize");
             text_filename.Enabled = radio_filename.Checked;
-            text_filename.Text = setting.GetString(SETTING_FILENAME, "-resize");
+            text_filename.Text = _setting.GetString(SETTING_FILENAME, "-resize");
             combo_filename.Enabled = radio_filename.Checked;
-            if (setting.GetBool(SETTING_MODIFIER, false))
+            if (_setting.GetBool(SETTING_MODIFIER, false))
                 combo_filename.SelectedIndex = 0;
             else
                 combo_filename.SelectedIndex = 1;
-            check_overwrite.Checked = setting.GetBool(SETTING_OVERWRITE, true);
+            check_overwrite.Checked = _setting.GetBool(SETTING_OVERWRITE, true);
 
             ArrayList list = new ArrayList();
-            int num = setting.GetInt(SETTING_LIST_NUM, 0);
+            int num = _setting.GetInt(SETTING_LIST_NUM, 0);
             for (int i = 0; i < num; ++i)
             {
                 SizeSelector.ItemInfo info = new SizeSelector.ItemInfo(
-                    setting.GetString(SETTING_LIST_ID + i, ""),
-                    setting.GetString(SETTING_LIST_CATEGORY + i, ""),
-                    setting.GetString(SETTING_LIST_NAME + i, ""),
-                    setting.GetInt(SETTING_LIST_WIDTH + i, 0),
-                    setting.GetInt(SETTING_LIST_HEIGHT + i, 0),
-                    setting.GetInt(SETTING_LIST_METHOD + i, 1));
-                combo_size.Items.Add(info.category + " - " + info.name);
+                    _setting.GetString(SETTING_LIST_ID + i, ""),
+                    _setting.GetString(SETTING_LIST_CATEGORY + i, ""),
+                    _setting.GetString(SETTING_LIST_NAME + i, ""),
+                    _setting.GetInt(SETTING_LIST_WIDTH + i, 0),
+                    _setting.GetInt(SETTING_LIST_HEIGHT + i, 0),
+                    _setting.GetInt(SETTING_LIST_METHOD + i, 1));
+                combo_size.Items.Add(info.name);
                 list.Add(info);
             }
             combo_size.Tag = list;
-            if (num != 0)
+            if (num != 0) {
                 combo_size.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -323,6 +324,45 @@ namespace cuberesize
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveRecentlyResizedList
+        /// 
+        /// <summary>
+        /// 最近に使用したリサイズ設定の一覧を保存する．
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SaveRecentlyResizedList() {
+            ArrayList list = (ArrayList)combo_size.Tag;
+            if (_presize != null) {
+                for (int i = 0; i < list.Count; ++i) {
+                    if (((SizeSelector.ItemInfo)list[i]).id == _presize.id && ((SizeSelector.ItemInfo)list[i]).category == _presize.category) {
+                        list.RemoveAt(i);
+                        combo_size.Items.RemoveAt(i);
+                        break;
+                    }
+                }
+                combo_size.Items.Insert(0, _presize.name);
+                list.Insert(0, _presize);
+            }
+            combo_size.SelectedIndex = 0;
+
+            int num = combo_size.Items.Count;
+            _setting.SetInt(SETTING_LIST_NUM, num);
+            for (int i = 0; i < num; ++i) {
+                SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)list[i];
+                _setting.SetString(SETTING_LIST_ID + i, info.id);
+                _setting.SetString(SETTING_LIST_CATEGORY + i, info.category);
+                _setting.SetString(SETTING_LIST_NAME + i, info.name);
+                _setting.SetInt(SETTING_LIST_WIDTH + i, info.width);
+                _setting.SetInt(SETTING_LIST_HEIGHT + i, info.height);
+                _setting.SetInt(SETTING_LIST_METHOD + i, info.method);
+            }
+
+            _presize = null;
+        }
+
         #endregion
 
         /* ----------------------------------------------------------------- */
@@ -383,49 +423,22 @@ namespace cuberesize
         ///
         /* ----------------------------------------------------------------- */
         private void button_save_Click(object sender, EventArgs e) {
-            setting.SetInt(SETTING_WIDTH, (int)numeric_width.Value);
-            setting.SetInt(SETTING_HEIGHT, (int)numeric_height.Value);
-            setting.SetInt(SETTING_RESIZE_METHOD, this.GetResizeMethod());
-            setting.SetBool(SETTING_IS_QUALITY, radio_quality.Checked);
-            setting.SetInt(SETTING_QUALITY, (int)numeric_quality.Value);
-            setting.SetInt(SETTING_FILESIZE, (int)numeric_filesize.Value);
-            setting.SetBool(SETTING_BRIGHTNESS, check_brightness.Checked);
-            setting.SetBool(SETTING_SATURATION, check_saturation.Checked);
-            setting.SetBool(SETTING_CONTRAST, check_contrast.Checked);
-            setting.SetBool(SETTING_MONOCHROME, check_monochrome.Checked);
-            setting.SetBool(SETTING_SEPIA, check_sepia.Checked);
-            setting.SetBool(SETTING_IS_FOLDER, radio_folder.Checked);
-            setting.SetString(SETTING_FOLDER, text_folder.Text);
-            setting.SetString(SETTING_FILENAME, text_filename.Text);
-            setting.SetBool(SETTING_MODIFIER, combo_filename.SelectedIndex == 0);
-            setting.SetBool(SETTING_OVERWRITE, check_overwrite.Checked);
-
-            ArrayList list = (ArrayList)combo_size.Tag;
-            if (presize != null) {
-                for (int i = 0; i < list.Count; ++i) {
-                    if (((SizeSelector.ItemInfo)list[i]).id == presize.id && ((SizeSelector.ItemInfo)list[i]).category == presize.category) {
-                        list.RemoveAt(i);
-                        combo_size.Items.RemoveAt(i);
-                        break;
-                    }
-                }
-                combo_size.Items.Insert(0, presize.name + " - " + presize.width + "×" + presize.height);
-                list.Insert(0, presize);
-            }
-
-            int num = combo_size.Items.Count;
-            setting.SetInt(SETTING_LIST_NUM, num);
-            for (int i = 0; i < num; ++i) {
-                SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)list[i];
-                setting.SetString(SETTING_LIST_ID + i, info.id);
-                setting.SetString(SETTING_LIST_CATEGORY + i, info.category);
-                setting.SetString(SETTING_LIST_NAME + i, info.name);
-                setting.SetInt(SETTING_LIST_WIDTH + i, info.width);
-                setting.SetInt(SETTING_LIST_HEIGHT + i, info.height);
-                setting.SetInt(SETTING_LIST_METHOD + i, info.method);
-            }
-
-            presize = null;
+            _setting.SetInt(SETTING_WIDTH, (int)numeric_width.Value);
+            _setting.SetInt(SETTING_HEIGHT, (int)numeric_height.Value);
+            _setting.SetInt(SETTING_RESIZE_METHOD, this.GetResizeMethod());
+            _setting.SetBool(SETTING_IS_QUALITY, radio_quality.Checked);
+            _setting.SetInt(SETTING_QUALITY, (int)numeric_quality.Value);
+            _setting.SetInt(SETTING_FILESIZE, (int)numeric_filesize.Value);
+            _setting.SetBool(SETTING_BRIGHTNESS, check_brightness.Checked);
+            _setting.SetBool(SETTING_SATURATION, check_saturation.Checked);
+            _setting.SetBool(SETTING_CONTRAST, check_contrast.Checked);
+            _setting.SetBool(SETTING_MONOCHROME, check_monochrome.Checked);
+            _setting.SetBool(SETTING_SEPIA, check_sepia.Checked);
+            _setting.SetBool(SETTING_IS_FOLDER, radio_folder.Checked);
+            _setting.SetString(SETTING_FOLDER, text_folder.Text);
+            _setting.SetString(SETTING_FILENAME, text_filename.Text);
+            _setting.SetBool(SETTING_MODIFIER, combo_filename.SelectedIndex == 0);
+            _setting.SetBool(SETTING_OVERWRITE, check_overwrite.Checked);
 
             MessageBox.Show(this, "現在の設定を保存しました。", "CubeImage Resize", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -451,12 +464,13 @@ namespace cuberesize
             using (SizeSelector selector = new SizeSelector(SIZE_SELECTOR_LAYOUT_XML)) {
                 if (selector.ShowDialog(this) == System.Windows.Forms.DialogResult.Cancel)
                     return;
-                isupdate = true;
-                presize = selector.SelectedItem;
-                numeric_width.Value = presize.width;
-                numeric_height.Value = presize.height;
-                this.SetResizeMethod(presize.method);
-                isupdate = false;
+                _isupdate = true;
+                _presize = selector.SelectedItem;
+                numeric_width.Value = _presize.width;
+                numeric_height.Value = _presize.height;
+                this.SetResizeMethod(_presize.method);
+                this.SaveRecentlyResizedList();
+                _isupdate = false;
             }
         }
 
@@ -571,8 +585,8 @@ namespace cuberesize
 
         private void numeric_wh_ValueChanged(object sender, EventArgs e)
         {
-            if (!isupdate)
-                presize = null;
+            if (!_isupdate)
+                _presize = null;
         }
 
         private void combo_size_SelectedIndexChanged(object sender, EventArgs e)
@@ -580,6 +594,7 @@ namespace cuberesize
             SizeSelector.ItemInfo info = (SizeSelector.ItemInfo)((ArrayList)combo_size.Tag)[combo_size.SelectedIndex];
             numeric_width.Value = info.width;
             numeric_height.Value = info.height;
+            this.SetResizeMethod(info.method);
         }
 
         #endregion

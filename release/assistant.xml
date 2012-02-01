@@ -1,17 +1,38 @@
 <cuberesize>
-    <category id="general" text="一般">
-        <item id="general_mixi" text="mixi" width="400" height="400" />
-        <item id="general_twitter" text="twitter" width="64" height="64" />
-        <item id="general_facebook" text="facebook" width="64" height="64" />
-    </catogory>
-    <category id="test1" text="テストカテゴリ1">
-        <item id="test1_item1" text="アイテム1" width="640" height="480" />
-        <item id="test1_item2" text="アイテム2" width="180" height="180" />
-        <item id="test1_item3" text="アイテム3" width="64" height="64" />
+    <category id="web" text="SNS・ブログ">
+        <item id="mixi-profile" text="mixi プロフィール (180×180)" width="180" height="180" />
+        <item id="mixi-diary" text="mixi 日記 (640×640)" width="640" height="640" />
+        <item id="twitter-profile-large" text="twitter プロフィール・大 (128×128)" width="128" height="128" />
+        <item id="twitter-profile-small" text="twitter プロフィール・小 (48×48)" width="48" height="48" />
+        <item id="facebook-profile" text="Facebook プロフィール (200×任意の高さ)" width="200" height="1" method="2" />
+		<item id="google-plus-profile" text="Google+ プロフィール (200×200)" width="200" height="200" />
+		<item id="gree-profile" text="GREE プロフィール (240×320)" width="240" height="320" />
+		<item id="ameba-blog-profile" text="Amebaブログ プロフィール (150×150)" width="150" height="150" />
+		<item id="rakuten-blog-profile" text="楽天ブログ プロフィール (128×任意の高さ)" width="128" height="1" method="2" />
     </category>
-    <category id="test2" text="テストカテゴリ2">
-        <item id="test2_item1" text="アイテム1" width="640" height="480" />
-        <item id="test2_item2" text="アイテム2" width="180" height="180" />
-        <item id="test2_item3" text="アイテム3" width="64" height="64" />
+	<category id="mobile" text="携帯待ち受け画面">
+		<item id="mobile-qvga" text="QVGA (240×320)" width="240" height="320" />
+		<item id="mobile-wqvga" text="WQVGA (240×400)" width="240" height="400" />
+		<item id="mobile-wqvga-plus" text="WQVGA+ (240×427)" width="240" height="427" />
+		<item id="mobile-vga" text="VGA (480×640)" width="480" height="640" />
+		<item id="mobile-wvga" text="GALAXY S II/HTC Desire 他 (480×800)" width="480" height="800" />
+		<item id="mobile-wvga-wide" text="GALAXY S II/HTC Desire 他 (960×800/壁紙)" width="960" height="800" />
+		<item id="mobile-wvga-plus" text="Xperia Acro/REGZA Phone 他 (480×854)" width="480" height="854" />
+		<item id="mobile-wvga-plus-wide" text="Xperia Acro/REGZA Phone 他 (960×854/壁紙)" width="960" height="854" />
+		<item id="aquos" text="AQUOS PHONE 他 (540×960)" width="540" height="960" />
+		<item id="aquos" text="AQUOS PHONE 他 (1080×960/壁紙)" width="1080" height="960" />
+		<item id="iphone-3gs" text="iPhone 3GS/iPod Touch 他 (320×480)" width="320" height="480" />
+		<item id="iphone-4s" text="iPhone 4S/IS03 他 (640×960)" width="640" height="960" />
+		<item id="galaxy-tab" text="GALAXY Tab 他 (600×1024)" width="600" height="1024" />
+	</category>
+    <category id="general" text="その他">
+        <item id="wvga" text="WVGA (800×480)" width="800" height="480" />
+		<item id="svga" text="SVGA (800×600)" width="800" height="600" />
+		<item id="xga" text="XGA (1024×768)" width="1024" height="768" />
+		<item id="quad-vga" text="Quad-VGA (1280×960)" width="1280" height="960" />
+		<item id="sxga" text="SXGA (1280×1024)" width="1280" height="1024" />
+		<item id="sxga-plus" text="SXGA+ (1400×1050)" width="1400" height="1050" />
+		<item id="wsxga-plus" text="WSXGA+ (1680×1050)" width="1680" height="1050" />
+		<item id="uxga" text="UXGA (1600×1200)" width="1600" height="1200" />
     </category>
 </cuberesize>

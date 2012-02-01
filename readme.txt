@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
   CubeImage Resize
-  Copyright (c) 2011 CubeSoft, Inc. All rights reserved.
+  Copyright (c) 2012 CubeSoft, Inc. All rights reserved.
 
   開発・配布：株式会社キューブ・ソフト
   Mailto: support@cube-soft.jp
