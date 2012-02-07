@@ -12,7 +12,7 @@ namespace cuberesize
         public Bitmap Image { get; protected set; }
 
         public ImageResizer(Bitmap origin)
-        {
+        {   
             if (origin != null)
                 Image = new Bitmap(origin);
             else
@@ -69,7 +69,7 @@ namespace cuberesize
         {
             ConvertImage2(hsv =>
             {
-                hsv[HSV.Saturation] += 0.25;
+                hsv[HSV.Saturation] += 0.10;
                 return hsv;
             });
         }
@@ -78,7 +78,7 @@ namespace cuberesize
         {
             ConvertImage2(hsv =>
             {
-                hsv[HSV.Value] += 0.25;
+                hsv[HSV.Value] += 0.10;
                 return hsv;
             });
         }

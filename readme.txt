@@ -33,5 +33,5 @@ http://www.microsoft.com/downloads/details.aspx?FamilyId=0856eacb-4362-4b0d-8edd
 選んだサイズや各種設定は「設定を保存」を押すことで保存することができます。
 
 ■バージョン履歴
-2011/12/27 version 1.0.0
+2012/2/8 version 1.0.0
 - 最初の公開バージョン

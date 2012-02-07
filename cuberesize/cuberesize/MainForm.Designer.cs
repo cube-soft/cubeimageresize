@@ -46,37 +46,43 @@
             this._SaveSettingGroupBox = new System.Windows.Forms.GroupBox();
             this.check_overwrite = new System.Windows.Forms.CheckBox();
             this._SizeSettingGroupBox = new System.Windows.Forms.GroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel_recent = new System.Windows.Forms.Panel();
+            this.button_size = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.combo_size = new System.Windows.Forms.ComboBox();
+            this._SizeSettingSeparatorLabel = new System.Windows.Forms.Label();
+            this.label_image = new System.Windows.Forms.Label();
+            this.check_resize = new System.Windows.Forms.CheckBox();
+            this.check_quality = new System.Windows.Forms.CheckBox();
+            this.panel_resize = new System.Windows.Forms.Panel();
+            this.panel_resize_method = new System.Windows.Forms.Panel();
             this.radio_resize_height = new System.Windows.Forms.RadioButton();
             this.radio_resize_width = new System.Windows.Forms.RadioButton();
             this.radio_resize_aspect = new System.Windows.Forms.RadioButton();
             this.radio_resize_force = new System.Windows.Forms.RadioButton();
-            this.numeric_filesize = new System.Windows.Forms.NumericUpDown();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button_size = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.combo_size = new System.Windows.Forms.ComboBox();
-            this.numeric_quality = new System.Windows.Forms.NumericUpDown();
             this.numeric_height = new System.Windows.Forms.NumericUpDown();
             this.numeric_width = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel_quality = new System.Windows.Forms.Panel();
+            this.numeric_filesize = new System.Windows.Forms.NumericUpDown();
+            this.numeric_quality = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.radio_filesize = new System.Windows.Forms.RadioButton();
             this.track_quality = new System.Windows.Forms.TrackBar();
             this.combo_quality = new System.Windows.Forms.ComboBox();
             this.radio_quality = new System.Windows.Forms.RadioButton();
-            this._SizeSettingSeparatorLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label_image = new System.Windows.Forms.Label();
             this._EffectSettingGroupBox.SuspendLayout();
             this._SaveSettingGroupBox.SuspendLayout();
             this._SizeSettingGroupBox.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_quality)).BeginInit();
+            this.panel_recent.SuspendLayout();
+            this.panel_resize.SuspendLayout();
+            this.panel_resize_method.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_height)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_width)).BeginInit();
+            this.panel_quality.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_quality)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_quality)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,7 +93,7 @@
             this._EffectSettingGroupBox.Controls.Add(this.check_contrast);
             this._EffectSettingGroupBox.Controls.Add(this.check_saturation);
             this._EffectSettingGroupBox.Controls.Add(this.check_brightness);
-            this._EffectSettingGroupBox.Location = new System.Drawing.Point(12, 239);
+            this._EffectSettingGroupBox.Location = new System.Drawing.Point(12, 259);
             this._EffectSettingGroupBox.Name = "_EffectSettingGroupBox";
             this._EffectSettingGroupBox.Size = new System.Drawing.Size(205, 136);
             this._EffectSettingGroupBox.TabIndex = 14;
@@ -204,7 +210,7 @@
             // 
             // button_save
             // 
-            this.button_save.Location = new System.Drawing.Point(416, 381);
+            this.button_save.Location = new System.Drawing.Point(416, 401);
             this.button_save.Name = "button_save";
             this.button_save.Size = new System.Drawing.Size(80, 29);
             this.button_save.TabIndex = 22;
@@ -215,7 +221,7 @@
             // button_cancel
             // 
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.Location = new System.Drawing.Point(502, 381);
+            this.button_cancel.Location = new System.Drawing.Point(502, 401);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(80, 29);
             this.button_cancel.TabIndex = 23;
@@ -232,7 +238,7 @@
             this._SaveSettingGroupBox.Controls.Add(this.radio_folder);
             this._SaveSettingGroupBox.Controls.Add(this.text_filename);
             this._SaveSettingGroupBox.Controls.Add(this.combo_filename);
-            this._SaveSettingGroupBox.Location = new System.Drawing.Point(223, 239);
+            this._SaveSettingGroupBox.Location = new System.Drawing.Point(223, 259);
             this._SaveSettingGroupBox.Name = "_SaveSettingGroupBox";
             this._SaveSettingGroupBox.Size = new System.Drawing.Size(359, 136);
             this._SaveSettingGroupBox.TabIndex = 26;
@@ -251,37 +257,126 @@
             // 
             // _SizeSettingGroupBox
             // 
-            this._SizeSettingGroupBox.Controls.Add(this.panel2);
-            this._SizeSettingGroupBox.Controls.Add(this.numeric_filesize);
-            this._SizeSettingGroupBox.Controls.Add(this.panel1);
-            this._SizeSettingGroupBox.Controls.Add(this.numeric_quality);
-            this._SizeSettingGroupBox.Controls.Add(this.numeric_height);
-            this._SizeSettingGroupBox.Controls.Add(this.numeric_width);
-            this._SizeSettingGroupBox.Controls.Add(this.label5);
-            this._SizeSettingGroupBox.Controls.Add(this.radio_filesize);
-            this._SizeSettingGroupBox.Controls.Add(this.track_quality);
-            this._SizeSettingGroupBox.Controls.Add(this.combo_quality);
-            this._SizeSettingGroupBox.Controls.Add(this.radio_quality);
+            this._SizeSettingGroupBox.Controls.Add(this.panel_quality);
+            this._SizeSettingGroupBox.Controls.Add(this.panel_resize);
+            this._SizeSettingGroupBox.Controls.Add(this.check_quality);
+            this._SizeSettingGroupBox.Controls.Add(this.check_resize);
+            this._SizeSettingGroupBox.Controls.Add(this.panel_recent);
             this._SizeSettingGroupBox.Controls.Add(this._SizeSettingSeparatorLabel);
-            this._SizeSettingGroupBox.Controls.Add(this.label3);
-            this._SizeSettingGroupBox.Controls.Add(this.label2);
             this._SizeSettingGroupBox.Location = new System.Drawing.Point(12, 12);
             this._SizeSettingGroupBox.Name = "_SizeSettingGroupBox";
-            this._SizeSettingGroupBox.Size = new System.Drawing.Size(424, 221);
+            this._SizeSettingGroupBox.Size = new System.Drawing.Size(424, 241);
             this._SizeSettingGroupBox.TabIndex = 27;
             this._SizeSettingGroupBox.TabStop = false;
             this._SizeSettingGroupBox.Text = "サイズ設定";
             // 
-            // panel2
+            // panel_recent
             // 
-            this.panel2.Controls.Add(this.radio_resize_height);
-            this.panel2.Controls.Add(this.radio_resize_width);
-            this.panel2.Controls.Add(this.radio_resize_aspect);
-            this.panel2.Controls.Add(this.radio_resize_force);
-            this.panel2.Location = new System.Drawing.Point(6, 47);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(177, 90);
-            this.panel2.TabIndex = 47;
+            this.panel_recent.BackColor = System.Drawing.SystemColors.Control;
+            this.panel_recent.Controls.Add(this.button_size);
+            this.panel_recent.Controls.Add(this.label6);
+            this.panel_recent.Controls.Add(this.combo_size);
+            this.panel_recent.Location = new System.Drawing.Point(6, 161);
+            this.panel_recent.Name = "panel_recent";
+            this.panel_recent.Size = new System.Drawing.Size(412, 70);
+            this.panel_recent.TabIndex = 45;
+            // 
+            // button_size
+            // 
+            this.button_size.Location = new System.Drawing.Point(6, 35);
+            this.button_size.Name = "button_size";
+            this.button_size.Size = new System.Drawing.Size(401, 24);
+            this.button_size.TabIndex = 2;
+            this.button_size.Text = "他の設定サイズより選ぶ";
+            this.button_size.UseVisualStyleBackColor = true;
+            this.button_size.Click += new System.EventHandler(this.button_size_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 12);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(115, 12);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "以前に使用したサイズ：";
+            // 
+            // combo_size
+            // 
+            this.combo_size.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combo_size.FormattingEnabled = true;
+            this.combo_size.Location = new System.Drawing.Point(129, 9);
+            this.combo_size.Name = "combo_size";
+            this.combo_size.Size = new System.Drawing.Size(278, 20);
+            this.combo_size.TabIndex = 0;
+            this.combo_size.SelectedIndexChanged += new System.EventHandler(this.combo_size_SelectedIndexChanged);
+            // 
+            // _SizeSettingSeparatorLabel
+            // 
+            this._SizeSettingSeparatorLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this._SizeSettingSeparatorLabel.Location = new System.Drawing.Point(189, 19);
+            this._SizeSettingSeparatorLabel.MinimumSize = new System.Drawing.Size(0, 104);
+            this._SizeSettingSeparatorLabel.Name = "_SizeSettingSeparatorLabel";
+            this._SizeSettingSeparatorLabel.Size = new System.Drawing.Size(2, 140);
+            this._SizeSettingSeparatorLabel.TabIndex = 36;
+            // 
+            // label_image
+            // 
+            this.label_image.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_image.Image = global::cuberesize.Properties.Resources.draghere;
+            this.label_image.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label_image.Location = new System.Drawing.Point(442, 37);
+            this.label_image.MinimumSize = new System.Drawing.Size(128, 128);
+            this.label_image.Name = "label_image";
+            this.label_image.Padding = new System.Windows.Forms.Padding(0, 40, 0, 0);
+            this.label_image.Size = new System.Drawing.Size(140, 197);
+            this.label_image.TabIndex = 25;
+            this.label_image.Text = "ここに画像データをドラッグ";
+            this.label_image.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // check_resize
+            // 
+            this.check_resize.AutoSize = true;
+            this.check_resize.Location = new System.Drawing.Point(6, 18);
+            this.check_resize.Name = "check_resize";
+            this.check_resize.Size = new System.Drawing.Size(105, 16);
+            this.check_resize.TabIndex = 48;
+            this.check_resize.Text = "サイズを変更する";
+            this.check_resize.UseVisualStyleBackColor = true;
+            this.check_resize.CheckedChanged += new System.EventHandler(this.check_resize_CheckedChanged);
+            // 
+            // check_quality
+            // 
+            this.check_quality.AutoSize = true;
+            this.check_quality.Location = new System.Drawing.Point(198, 18);
+            this.check_quality.Name = "check_quality";
+            this.check_quality.Size = new System.Drawing.Size(100, 16);
+            this.check_quality.TabIndex = 49;
+            this.check_quality.Text = "画質を変更する";
+            this.check_quality.UseVisualStyleBackColor = true;
+            this.check_quality.CheckedChanged += new System.EventHandler(this.check_quality_CheckedChanged);
+            // 
+            // panel_resize
+            // 
+            this.panel_resize.Controls.Add(this.panel_resize_method);
+            this.panel_resize.Controls.Add(this.numeric_height);
+            this.panel_resize.Controls.Add(this.numeric_width);
+            this.panel_resize.Controls.Add(this.label3);
+            this.panel_resize.Controls.Add(this.label2);
+            this.panel_resize.Location = new System.Drawing.Point(6, 38);
+            this.panel_resize.Name = "panel_resize";
+            this.panel_resize.Size = new System.Drawing.Size(177, 118);
+            this.panel_resize.TabIndex = 50;
+            // 
+            // panel_resize_method
+            // 
+            this.panel_resize_method.Controls.Add(this.radio_resize_height);
+            this.panel_resize_method.Controls.Add(this.radio_resize_width);
+            this.panel_resize_method.Controls.Add(this.radio_resize_aspect);
+            this.panel_resize_method.Controls.Add(this.radio_resize_force);
+            this.panel_resize_method.Location = new System.Drawing.Point(0, 27);
+            this.panel_resize_method.Name = "panel_resize_method";
+            this.panel_resize_method.Size = new System.Drawing.Size(177, 90);
+            this.panel_resize_method.TabIndex = 52;
             // 
             // radio_resize_height
             // 
@@ -331,71 +426,9 @@
             this.radio_resize_force.UseVisualStyleBackColor = true;
             this.radio_resize_force.CheckedChanged += new System.EventHandler(this.radio_resize_method_CheckedChanged);
             // 
-            // numeric_filesize
-            // 
-            this.numeric_filesize.Location = new System.Drawing.Point(294, 89);
-            this.numeric_filesize.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numeric_filesize.Name = "numeric_filesize";
-            this.numeric_filesize.Size = new System.Drawing.Size(92, 19);
-            this.numeric_filesize.TabIndex = 46;
-            this.numeric_filesize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.Controls.Add(this.button_size);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.combo_size);
-            this.panel1.Location = new System.Drawing.Point(6, 143);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(412, 70);
-            this.panel1.TabIndex = 45;
-            // 
-            // button_size
-            // 
-            this.button_size.Location = new System.Drawing.Point(6, 35);
-            this.button_size.Name = "button_size";
-            this.button_size.Size = new System.Drawing.Size(401, 24);
-            this.button_size.TabIndex = 2;
-            this.button_size.Text = "他の設定サイズより選ぶ";
-            this.button_size.UseVisualStyleBackColor = true;
-            this.button_size.Click += new System.EventHandler(this.button_size_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 12);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(115, 12);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "以前に使用したサイズ：";
-            // 
-            // combo_size
-            // 
-            this.combo_size.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.combo_size.FormattingEnabled = true;
-            this.combo_size.Location = new System.Drawing.Point(129, 9);
-            this.combo_size.Name = "combo_size";
-            this.combo_size.Size = new System.Drawing.Size(278, 20);
-            this.combo_size.TabIndex = 0;
-            this.combo_size.SelectedIndexChanged += new System.EventHandler(this.combo_size_SelectedIndexChanged);
-            // 
-            // numeric_quality
-            // 
-            this.numeric_quality.Location = new System.Drawing.Point(280, 26);
-            this.numeric_quality.Name = "numeric_quality";
-            this.numeric_quality.Size = new System.Drawing.Size(58, 19);
-            this.numeric_quality.TabIndex = 44;
-            this.numeric_quality.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numeric_quality.ValueChanged += new System.EventHandler(this.numeric_quality_ValueChanged);
-            // 
             // numeric_height
             // 
-            this.numeric_height.Location = new System.Drawing.Point(85, 22);
+            this.numeric_height.Location = new System.Drawing.Point(73, 2);
             this.numeric_height.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -408,18 +441,17 @@
             0});
             this.numeric_height.Name = "numeric_height";
             this.numeric_height.Size = new System.Drawing.Size(50, 19);
-            this.numeric_height.TabIndex = 43;
+            this.numeric_height.TabIndex = 51;
             this.numeric_height.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numeric_height.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numeric_height.ValueChanged += new System.EventHandler(this.numeric_wh_ValueChanged);
             // 
             // numeric_width
             // 
-            this.numeric_width.Location = new System.Drawing.Point(6, 22);
+            this.numeric_width.Location = new System.Drawing.Point(0, 2);
             this.numeric_width.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -432,31 +464,83 @@
             0});
             this.numeric_width.Name = "numeric_width";
             this.numeric_width.Size = new System.Drawing.Size(50, 19);
-            this.numeric_width.TabIndex = 42;
+            this.numeric_width.TabIndex = 50;
             this.numeric_width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numeric_width.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numeric_width.ValueChanged += new System.EventHandler(this.numeric_wh_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(126, 4);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(42, 12);
+            this.label3.TabIndex = 49;
+            this.label3.Text = "ピクセル";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(53, 4);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 12);
+            this.label2.TabIndex = 48;
+            this.label2.Text = "×";
+            // 
+            // panel_quality
+            // 
+            this.panel_quality.Controls.Add(this.numeric_filesize);
+            this.panel_quality.Controls.Add(this.numeric_quality);
+            this.panel_quality.Controls.Add(this.label5);
+            this.panel_quality.Controls.Add(this.radio_filesize);
+            this.panel_quality.Controls.Add(this.track_quality);
+            this.panel_quality.Controls.Add(this.combo_quality);
+            this.panel_quality.Controls.Add(this.radio_quality);
+            this.panel_quality.Location = new System.Drawing.Point(197, 38);
+            this.panel_quality.Name = "panel_quality";
+            this.panel_quality.Size = new System.Drawing.Size(221, 118);
+            this.panel_quality.TabIndex = 51;
+            // 
+            // numeric_filesize
+            // 
+            this.numeric_filesize.Location = new System.Drawing.Point(99, 68);
+            this.numeric_filesize.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numeric_filesize.Name = "numeric_filesize";
+            this.numeric_filesize.Size = new System.Drawing.Size(92, 19);
+            this.numeric_filesize.TabIndex = 53;
+            this.numeric_filesize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // numeric_quality
+            // 
+            this.numeric_quality.Location = new System.Drawing.Point(85, 5);
+            this.numeric_quality.Name = "numeric_quality";
+            this.numeric_quality.Size = new System.Drawing.Size(58, 19);
+            this.numeric_quality.TabIndex = 52;
+            this.numeric_quality.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(392, 91);
+            this.label5.Location = new System.Drawing.Point(197, 70);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(19, 12);
-            this.label5.TabIndex = 41;
+            this.label5.TabIndex = 51;
             this.label5.Text = "kB";
             // 
             // radio_filesize
             // 
             this.radio_filesize.AutoSize = true;
-            this.radio_filesize.Location = new System.Drawing.Point(198, 89);
+            this.radio_filesize.Location = new System.Drawing.Point(3, 68);
             this.radio_filesize.Name = "radio_filesize";
             this.radio_filesize.Size = new System.Drawing.Size(92, 16);
-            this.radio_filesize.TabIndex = 40;
+            this.radio_filesize.TabIndex = 50;
             this.radio_filesize.Text = "ファイルサイズ：";
             this.radio_filesize.UseVisualStyleBackColor = true;
             this.radio_filesize.CheckedChanged += new System.EventHandler(this.radio_filesize_CheckedChanged);
@@ -464,15 +548,14 @@
             // track_quality
             // 
             this.track_quality.LargeChange = 10;
-            this.track_quality.Location = new System.Drawing.Point(198, 51);
+            this.track_quality.Location = new System.Drawing.Point(3, 30);
             this.track_quality.Maximum = 100;
             this.track_quality.Name = "track_quality";
             this.track_quality.Size = new System.Drawing.Size(215, 45);
-            this.track_quality.TabIndex = 39;
+            this.track_quality.TabIndex = 49;
             this.track_quality.TickFrequency = 10;
             this.track_quality.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.track_quality.Value = 100;
-            this.track_quality.Scroll += new System.EventHandler(this.track_quality_Scroll);
             // 
             // combo_quality
             // 
@@ -483,65 +566,23 @@
             "高",
             "中",
             "低"});
-            this.combo_quality.Location = new System.Drawing.Point(344, 25);
+            this.combo_quality.Location = new System.Drawing.Point(149, 4);
             this.combo_quality.Name = "combo_quality";
             this.combo_quality.Size = new System.Drawing.Size(69, 20);
-            this.combo_quality.TabIndex = 38;
-            this.combo_quality.SelectedIndexChanged += new System.EventHandler(this.combo_quality_SelectedIndexChanged);
+            this.combo_quality.TabIndex = 48;
             // 
             // radio_quality
             // 
             this.radio_quality.AutoSize = true;
             this.radio_quality.Checked = true;
-            this.radio_quality.Location = new System.Drawing.Point(198, 26);
+            this.radio_quality.Location = new System.Drawing.Point(3, 5);
             this.radio_quality.Name = "radio_quality";
             this.radio_quality.Size = new System.Drawing.Size(78, 16);
-            this.radio_quality.TabIndex = 37;
+            this.radio_quality.TabIndex = 47;
             this.radio_quality.TabStop = true;
             this.radio_quality.Text = "Jpeg画質：";
             this.radio_quality.UseVisualStyleBackColor = true;
             this.radio_quality.CheckedChanged += new System.EventHandler(this.radio_quality_CheckedChanged);
-            // 
-            // _SizeSettingSeparatorLabel
-            // 
-            this._SizeSettingSeparatorLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._SizeSettingSeparatorLabel.Location = new System.Drawing.Point(189, 19);
-            this._SizeSettingSeparatorLabel.MinimumSize = new System.Drawing.Size(0, 104);
-            this._SizeSettingSeparatorLabel.Name = "_SizeSettingSeparatorLabel";
-            this._SizeSettingSeparatorLabel.Size = new System.Drawing.Size(2, 120);
-            this._SizeSettingSeparatorLabel.TabIndex = 36;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(141, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 12);
-            this.label3.TabIndex = 35;
-            this.label3.Text = "ピクセル";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(62, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 12);
-            this.label2.TabIndex = 34;
-            this.label2.Text = "×";
-            // 
-            // label_image
-            // 
-            this.label_image.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label_image.Image = global::cuberesize.Properties.Resources.draghere;
-            this.label_image.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label_image.Location = new System.Drawing.Point(442, 37);
-            this.label_image.MinimumSize = new System.Drawing.Size(128, 128);
-            this.label_image.Name = "label_image";
-            this.label_image.Padding = new System.Windows.Forms.Padding(0, 40, 0, 0);
-            this.label_image.Size = new System.Drawing.Size(140, 177);
-            this.label_image.TabIndex = 25;
-            this.label_image.Text = "ここに画像データをドラッグ";
-            this.label_image.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -549,7 +590,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(594, 422);
+            this.ClientSize = new System.Drawing.Size(594, 442);
             this.Controls.Add(this._SizeSettingGroupBox);
             this.Controls.Add(this._SaveSettingGroupBox);
             this.Controls.Add(this.label_image);
@@ -569,14 +610,18 @@
             this._SaveSettingGroupBox.PerformLayout();
             this._SizeSettingGroupBox.ResumeLayout(false);
             this._SizeSettingGroupBox.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_quality)).EndInit();
+            this.panel_recent.ResumeLayout(false);
+            this.panel_recent.PerformLayout();
+            this.panel_resize.ResumeLayout(false);
+            this.panel_resize.PerformLayout();
+            this.panel_resize_method.ResumeLayout(false);
+            this.panel_resize_method.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_height)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_width)).EndInit();
+            this.panel_quality.ResumeLayout(false);
+            this.panel_quality.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_filesize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_quality)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_quality)).EndInit();
             this.ResumeLayout(false);
 
@@ -601,28 +646,32 @@
         private System.Windows.Forms.Label label_image;
         private System.Windows.Forms.GroupBox _SaveSettingGroupBox;
         private System.Windows.Forms.GroupBox _SizeSettingGroupBox;
-        private System.Windows.Forms.NumericUpDown numeric_filesize;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel_recent;
         private System.Windows.Forms.Button button_size;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox combo_size;
-        private System.Windows.Forms.NumericUpDown numeric_quality;
+        private System.Windows.Forms.Label _SizeSettingSeparatorLabel;
+        private System.Windows.Forms.CheckBox check_overwrite;
+        private System.Windows.Forms.CheckBox check_quality;
+        private System.Windows.Forms.CheckBox check_resize;
+        private System.Windows.Forms.Panel panel_resize;
+        private System.Windows.Forms.Panel panel_resize_method;
+        private System.Windows.Forms.RadioButton radio_resize_height;
+        private System.Windows.Forms.RadioButton radio_resize_width;
+        private System.Windows.Forms.RadioButton radio_resize_aspect;
+        private System.Windows.Forms.RadioButton radio_resize_force;
         private System.Windows.Forms.NumericUpDown numeric_height;
         private System.Windows.Forms.NumericUpDown numeric_width;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel_quality;
+        private System.Windows.Forms.NumericUpDown numeric_filesize;
+        private System.Windows.Forms.NumericUpDown numeric_quality;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RadioButton radio_filesize;
         private System.Windows.Forms.TrackBar track_quality;
         private System.Windows.Forms.ComboBox combo_quality;
         private System.Windows.Forms.RadioButton radio_quality;
-        private System.Windows.Forms.Label _SizeSettingSeparatorLabel;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.RadioButton radio_resize_height;
-        private System.Windows.Forms.RadioButton radio_resize_width;
-        private System.Windows.Forms.RadioButton radio_resize_aspect;
-        private System.Windows.Forms.RadioButton radio_resize_force;
-        private System.Windows.Forms.CheckBox check_overwrite;
     }
 }
 
