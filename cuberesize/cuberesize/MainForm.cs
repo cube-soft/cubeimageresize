@@ -412,7 +412,7 @@ namespace cuberesize
                 list.Insert(0, _presize);
                 combo_size.SelectedIndex = 0;
             }
-            else if (combo_size.SelectedIndex != 0)
+            else if (combo_size.SelectedIndex > 0)
             {
                 // 現在，選択されている項目を最上段へ移動させる．
                 var selected = list[combo_size.SelectedIndex];

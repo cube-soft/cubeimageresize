@@ -30,13 +30,13 @@ namespace cuberesize
             {
                 try
                 {
-                    var form = new MainForm();
+                    var engine = new MainForm();
                     foreach (string path in args)
                     {
                         if ((File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory)
-                            form.ProcessDirectory(path);
+                            engine.ProcessDirectory(path);
                         else
-                            form.ProcessImage(path);
+                            engine.ProcessImage(path);
                     }
                 }
                 catch (OperationCanceledException)
