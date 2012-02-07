@@ -71,7 +71,7 @@ namespace cuberesize
             this.SetResizeMethod(_setting.GetInt(SETTING_RESIZE_METHOD, 1));
 
             // 画質に関する初期設定
-            check_quality.Checked = _setting.GetBool(SETTING_ENABLE_RESIZE, false);
+            check_quality.Checked = _setting.GetBool(SETTING_ENABLE_QUALITY, false);
             panel_quality.Enabled = check_quality.Checked;
             if (_setting.GetBool(SETTING_IS_QUALITY, true))
                 radio_quality.Checked = true;
@@ -146,13 +146,14 @@ namespace cuberesize
         /* ----------------------------------------------------------------- */
         public bool ProcessDirectory(string dirpath)
         {
-            bool res = true;
             foreach (string filepath in Directory.GetFiles(dirpath))
             {
                 if (File.Exists(filepath))
-                    res = res && ProcessImage(filepath);
+                {
+                    if (!ProcessImage(filepath)) return false;
+                }
             }
-            return res;
+            return true;
         }
 
         /* ----------------------------------------------------------------- */
@@ -167,6 +168,8 @@ namespace cuberesize
         /* ----------------------------------------------------------------- */
         public bool ProcessImage(string filepath)
         {
+            var tmpfile = "";
+
             try
             {
                 var original = new Bitmap(filepath);
@@ -203,7 +206,6 @@ namespace cuberesize
                     result.toSepia();
 
                 // 各種処理の関係で一時ファイルにいったん保存した後，指定された保存先パスに移動させる．
-                var tmpfile = "";
                 do
                 {
                     tmpfile = Path.GetDirectoryName(dest) + @"\" + Path.GetRandomFileName() + @"\" + Path.GetFileName(dest);
@@ -221,12 +223,8 @@ namespace cuberesize
             }
             catch (OperationCanceledException /* err */)
             {
+                if (tmpfile.Length > 0) Directory.Delete(Path.GetDirectoryName(tmpfile), true);
                 throw;
-            }
-            catch (ArgumentException err)
-            {
-                MessageBox.Show(err.Message);
-                return false;
             }
             return true;
         }
@@ -454,15 +452,8 @@ namespace cuberesize
         {
             if (check_overwrite.Checked)
             {
-                try
-                {
-                    Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(src, dest, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs);
-                }
-                catch (OperationCanceledException /* err */)
-                {
-                    // キャンセルボタンが押された場合は，特別な処理を何も行わず終了する．
-                    // File.Delete(Path.GetDirectoryName(src));
-                }
+                Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(src, dest, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs);
+
             }
             else System.IO.File.Move(src, dest);
         }
